@@ -1,0 +1,38 @@
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWhnaGs1ZTAwMDAwdDIwOHl4NHVpOHh1IiwiZW1haWwiOiJjb2JhLWVseXNpYUBnbWFpbC5jb20iLCJpYXQiOjE3NjIwMTM4NzAsImV4cCI6MTc2MjEwMDI3MH0.wDlyy6ehG3GBOdGEOopdn9CRDjLUwBXrBDvvZhflERg
+@hostname = http://localhost:3000
+
+POST {{hostname}}/tasks
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+    "title": "Selesaikan coding task routes"
+}
+
+###
+
+GET {{hostname}}/tasks
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+@taskId = cmhghw3oj0001t2ugjb9h4w1f
+
+GET {{hostname}}/tasks/{{taskId}}
+Authorization: Bearer {{authToken}}
+
+###
+
+PATCH {{hostname}}/tasks/{{taskId}}
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+    "title": "Task routes sudah selesai (DI-UPDATE)"
+}
+
+###
+
+DELETE {{hostname}}/tasks/{{taskId}}
+Authorization: Bearer {{authToken}}
+

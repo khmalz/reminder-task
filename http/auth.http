@@ -1,0 +1,25 @@
+###
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+    "email": "coba-elysia@gmail.com",
+    "password": "password123",
+    "name": "Elysia Tester"
+}
+
+###
+
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "email": "coba-elysia@gmail.com",
+    "password": "password123"
+}
+
+###
+
+POST http://localhost:3000/auth/logout
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWhnaGs1ZTAwMDAwdDIwOHl4NHVpOHh1IiwiZW1haWwiOiJjb2JhLWVseXNpYUBnbWFpbC5jb20iLCJpYXQiOjE3NjIwMTM4NzAsImV4cCI6MTc2MjEwMDI3MH0.wDlyy6ehG3GBOdGEOopdn9CRDjLUwBXrBDvvZhflERg
