@@ -1,0 +1,35 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "main": "src/server.ts",
+  "scripts": {
+    "dev": "nodemon",
+    "start": "node dist/server.js",
+    "build": "tsc",
+    "db:pull": "prisma db pull",
+    "db:push": "prisma db push",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "prisma db seed",
+    "db:migrate-reset": "prisma migrate reset",
+    "db:studio": "prisma studio"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^6.18.0",
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/express": "^5.0.5",
+    "@types/jsonwebtoken": "^9.0.10",
+    "nodemon": "^3.1.10",
+    "prisma": "^6.18.0",
+    "ts-node": "^10.9.2"
+  }
+}
