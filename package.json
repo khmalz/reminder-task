@@ -4,13 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon",
     "start": "node dist/server.js",
-    "start:dev": "nodemon",
     "build": "tsc",
     "db:pull": "prisma db pull",
     "db:push": "prisma db push",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
+    "db:seed": "prisma db seed",
     "db:migrate-reset": "prisma migrate reset",
     "db:studio": "prisma studio"
   },

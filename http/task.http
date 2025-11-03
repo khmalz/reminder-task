@@ -1,12 +1,23 @@
-@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWhnaGs1ZTAwMDAwdDIwOHl4NHVpOHh1IiwiZW1haWwiOiJjb2JhLWVseXNpYUBnbWFpbC5jb20iLCJpYXQiOjE3NjIwMTM4NzAsImV4cCI6MTc2MjEwMDI3MH0.wDlyy6ehG3GBOdGEOopdn9CRDjLUwBXrBDvvZhflERg
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWhpbm1wem4wMDAwdDJ0MG5na3BzOGw4IiwiZW1haWwiOiJjb2JhLWVseXNpYUBnbWFpbC5jb20iLCJpYXQiOjE3NjIxNDQ5OTYsImV4cCI6MTc2MjIzMTM5Nn0.ZyA4GNGaJvvCi7diPBagsZrYgwn76YniSpfSg6lbGgI
 @hostname = http://localhost:3000
+
+@categoryId_Kind = cmhinrlra0004t2t0c68ae8mj
+@categoryId_Type = cmhinrvcx0006t2t0unmxzoj6
+@categoryId_Collect = cmhinpvnf0002t2t04oy1blv5
+@categoryId_Update = cmhinrvcx0006t2t0unmxzoj6
 
 POST {{hostname}}/tasks
 Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
 {
-    "title": "Selesaikan coding task routes"
+    "title": "Selesaikan coding task routes (v2 - Many-to-Many)",
+    "isCompleted": false,
+    "categoryIds": [
+        "{{categoryId_Kind}}",
+        "{{categoryId_Type}}",
+        "{{categoryId_Collect}}"
+    ]
 }
 
 ###
@@ -16,7 +27,7 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 ###
-@taskId = cmhghw3oj0001t2ugjb9h4w1f
+@taskId = cmhintcox0008t2t086dxpnhm
 
 GET {{hostname}}/tasks/{{taskId}}
 Authorization: Bearer {{authToken}}
@@ -28,7 +39,13 @@ Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
 {
-    "title": "Task routes sudah selesai (DI-UPDATE)"
+    "title": "Task routes v2 (DI-UPDATE)",
+    "isCompleted": true,
+    "categoryIds": [
+        "{{categoryId_Kind}}",
+        "{{categoryId_Update}}", 
+        "{{categoryId_Collect}}"
+    ]
 }
 
 ###

@@ -58,7 +58,6 @@ CategoryRouter.post("/", async (req: AuthenticatedRequest, res: Response) => {
    }
 });
 
-// --- 3. UPDATE: PUT /category/:id ---
 CategoryRouter.put("/:id", async (req: AuthenticatedRequest, res: Response) => {
    const userId = req.user?.id;
    const { title } = req.body;

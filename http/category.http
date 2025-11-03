@@ -1,4 +1,4 @@
-@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWhnbG5zYzcwMDAwdDJma3B1cTJ2Y294IiwiZW1haWwiOiJjb2JhLWVseXNpYUBnbWFpbC5jb20iLCJpYXQiOjE3NjIwMjA3NTIsImV4cCI6MTc2MjEwNzE1Mn0.aY2rliKuEhFLBChZIM3rp2ygssltrKlzfAS_Y6StTQg
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWhpbm1wem4wMDAwdDJ0MG5na3BzOGw4IiwiZW1haWwiOiJjb2JhLWVseXNpYUBnbWFpbC5jb20iLCJpYXQiOjE3NjIxNDQ5OTYsImV4cCI6MTc2MjIzMTM5Nn0.ZyA4GNGaJvvCi7diPBagsZrYgwn76YniSpfSg6lbGgI
 @hostname = http://localhost:3000
 
 ###
@@ -55,9 +55,10 @@ Authorization: Bearer {{authToken}}
 ### 
 POST {{hostname}}/category?type=TASK_KIND
 Content-Type: application/json
+Authorization: Bearer {{authToken}}
 
 {
-    "title": "Test Gagal"
+    "title": "Individu"
 }
 
 ### 

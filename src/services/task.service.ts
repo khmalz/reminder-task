@@ -1,24 +1,27 @@
+import { Prisma } from "@prisma/client";
 import prisma from "../lib/prisma";
 
-interface TaskInput {
+export interface TaskInput {
    title: string;
-   completed?: boolean;
-   categoryKindId: string;
-   categoryTypeId: string;
-   categoryCollectId: string;
+   isCompleted?: boolean;
+   categoryIds: string[];
 }
 
 export const TaskService = {
    async create(data: TaskInput, userId: string) {
-      const { categoryKindId, categoryTypeId, categoryCollectId, ...rest } = data;
+      const { categoryIds, ...rest } = data;
+
+      if (categoryIds.length === 0) {
+         throw new Error("Tugas harus memiliki setidaknya satu kategori.");
+      }
 
       return prisma.task.create({
          data: {
             ...rest,
             userId: userId,
-            categoryKindId,
-            categoryTypeId,
-            categoryCollectId,
+            categories: {
+               connect: categoryIds.map(id => ({ id: id })),
+            },
          },
       });
    },
@@ -28,9 +31,9 @@ export const TaskService = {
          where: { userId },
          orderBy: { createdAt: "desc" },
          include: {
-            categoryKind: true,
-            categoryType: true,
-            categoryCollect: true,
+            categories: {
+               select: { id: true, title: true, typeId: true },
+            },
          },
       });
    },
@@ -38,6 +41,11 @@ export const TaskService = {
    async findOne(taskId: string, userId: string) {
       const task = await prisma.task.findUnique({
          where: { id: taskId, userId },
+         include: {
+            categories: {
+               select: { id: true, title: true, typeId: true },
+            },
+         },
       });
 
       if (!task) {
@@ -54,9 +62,18 @@ export const TaskService = {
          throw new Error("Tugas tidak ditemukan atau bukan milik Anda.");
       }
 
+      const { categoryIds, ...rest } = data;
+      let updateData: Prisma.TaskUpdateInput = rest;
+
+      if (categoryIds) {
+         updateData.categories = {
+            set: categoryIds.map(id => ({ id: id })),
+         };
+      }
+
       return prisma.task.update({
          where: { id: taskId },
-         data,
+         data: updateData,
       });
    },
 

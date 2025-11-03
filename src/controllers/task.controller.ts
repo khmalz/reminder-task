@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
-import { TaskService } from "../services/task.service";
 import { AuthMiddleware } from "../middleware/auth.middleware";
+import { TaskInput, TaskService } from "../services/task.service";
 
 interface AuthenticatedRequest extends Request {
    user?: {
@@ -17,10 +17,23 @@ TaskRouter.post("/", async (req: AuthenticatedRequest, res: Response) => {
    const userId = req.user?.id;
    if (!userId) return res.status(401).json({ error: "Akses tidak sah." });
 
+   const { title, categoryIds } = req.body;
+
+   if (!categoryIds || !Array.isArray(categoryIds) || categoryIds.length === 0) {
+      return res.status(400).json({ error: "Array categoryIds wajib disertakan dan tidak boleh kosong." });
+   }
+   if (typeof title !== "string" || title.length === 0) {
+      return res.status(400).json({ error: 'Body field "title" wajib diisi.' });
+   }
+
    try {
       const newTask = await TaskService.create(req.body, userId);
       return res.status(201).json(newTask);
-   } catch (error) {
+   } catch (error: any) {
+      if (error.message.includes("minimal satu kategori")) {
+         return res.status(400).json({ error: error.message });
+      }
+      console.error(error);
       return res.status(500).json({ error: "Gagal membuat tugas." });
    }
 });
@@ -60,8 +73,21 @@ TaskRouter.patch("/:id", async (req: AuthenticatedRequest, res: Response) => {
    const userId = req.user?.id;
    if (!userId) return res.status(401).json({ error: "Akses tidak sah." });
 
+   const { title, categoryIds, isCompleted } = req.body;
+
+   const updateData: Partial<TaskInput> = {};
+   if (title !== undefined) updateData.title = title;
+   if (isCompleted !== undefined) updateData.isCompleted = isCompleted;
+
+   if (categoryIds !== undefined) {
+      if (!Array.isArray(categoryIds) || categoryIds.length === 0) {
+         return res.status(400).json({ error: "Array categoryIds tidak valid dan tidak boleh kosong." });
+      }
+      updateData.categoryIds = categoryIds;
+   }
+
    try {
-      const updatedTask = await TaskService.update(req.params.id, userId, req.body);
+      const updatedTask = await TaskService.update(req.params.id, userId, updateData);
       return res.status(200).json(updatedTask);
    } catch (error: any) {
       if (error.message.includes("tidak ditemukan")) {
