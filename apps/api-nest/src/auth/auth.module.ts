@@ -5,17 +5,17 @@ import { JwtModule } from '@nestjs/jwt';
 import { PrismaModule } from 'src/prisma/prisma.module';
 
 @Module({
-  imports: [
-    JwtModule.registerAsync({
-      // eslint-disable-next-line @typescript-eslint/require-await
-      useFactory: async () => ({
-        secret: process.env.SECRET_JWT,
-        signOptions: { expiresIn: 60 },
+   imports: [
+      JwtModule.registerAsync({
+         // eslint-disable-next-line @typescript-eslint/require-await
+         useFactory: async () => ({
+            secret: process.env.SECRET_JWT,
+            signOptions: { expiresIn: 60 },
+         }),
       }),
-    }),
-    PrismaModule,
-  ],
-  controllers: [AuthController],
-  providers: [AuthService],
+      PrismaModule,
+   ],
+   controllers: [AuthController],
+   providers: [AuthService],
 })
 export class AuthModule {}
