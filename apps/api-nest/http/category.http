@@ -1,0 +1,69 @@
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWhsN2w4dHAwMDAwdDJlazZjZTgwbG02IiwiZW1haWwiOiJjb2JhLWVseXNpYUBnbWFpbC5jb20iLCJpYXQiOjE3NjIyOTk0NjgsImV4cCI6MTc2MjM4NTg2OH0._nKr2KO2HRbwSPy2xEglZjmMw3RgNbQCjAjBlSx1BqE
+@hostname = http://localhost:3000
+
+### Ambil semua kategori TASK_KIND
+GET {{hostname}}/category?type=TASK_KIND
+Authorization: Bearer {{authToken}}
+
+### Buat kategori TASK_TYPE baru (FIXED)
+POST {{hostname}}/category
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "title": "Solo Work",
+    "categoryTypeName": "TASK_TYPE"
+}
+
+### Ambil semua kategori TASK_TYPE
+GET {{hostname}}/category?type=TASK_TYPE
+Authorization: Bearer {{authToken}}
+
+### Buat kategori TASK_COLLECTION baru (FIXED)
+POST {{hostname}}/category
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "title": "Zoom Link",
+    "categoryTypeName": "TASK_COLLECTION"
+}
+
+### 
+@customCategoryId = cmhl7toig0002t2ekc0r91q11
+
+
+### Update kategori custom
+PUT {{hostname}}/category/{{customCategoryId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "title": "Independent Project (Diupdate)"
+}
+
+### Ambil TASK_TYPE (untuk melihat hasil update)
+GET {{hostname}}/category?type=TASK_TYPE
+Authorization: Bearer {{authToken}}
+
+### Hapus kategori custom
+DELETE {{hostname}}/category/{{customCategoryId}}
+Authorization: Bearer {{authToken}}
+
+### Ambil TASK_TYPE (untuk melihat hasil delete)
+GET {{hostname}}/category?type=TASK_TYPE
+Authorization: Bearer {{authToken}}
+
+### Buat kategori TASK_KIND baru (FIXED)
+POST {{hostname}}/category
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{ 
+    "title": "Individu",
+    "categoryTypeName": "TASK_KIND"
+}
+
+### Uji Validasi Error (INI SEHARUSNYA GAGAL)
+GET {{hostname}}/category?type=SALAH_KETIK
+Authorization: Bearer {{authToken}}
