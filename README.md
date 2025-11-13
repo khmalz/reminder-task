@@ -2,14 +2,14 @@
 
 Ini adalah monorepo untuk aplikasi Reminder Task, yang dikelola menggunakan `pnpm workspaces`. Proyek ini terdiri dari dua aplikasi utama:
 
-- `apps/api`: Backend API (Express + TypeScript + Prisma)
+- `apps/api`: Backend API (NestJS + Prisma)
 - `apps/web`: Frontend Web (Next.js + React)
 
 ## 1. Aplikasi & Teknologi
 
 ### `apps/api` (Backend)
 
-Backend API yang dibuat dengan Express.js, TypeScript, dan Prisma. API ini menyediakan fungsionalitas untuk manajemen tugas (tasks) dan kategori (categories), yang dilindungi oleh autentikasi JWT (Login/Register).
+Backend API yang dibuat dengan NestJS dan Prisma. API ini menyediakan fungsionalitas untuk manajemen tugas (tasks) dan kategori (categories), yang dilindungi oleh autentikasi JWT (Login/Register).
 
 **Fitur Utama API:**
 
@@ -20,7 +20,7 @@ Backend API yang dibuat dengan Express.js, TypeScript, dan Prisma. API ini menye
 
 **Teknologi API:**
 
-- [Express.js](https://expressjs.com/) - Framework API
+- [NestJs](https://docs.nestjs.com/) - Framework API
 - [Prisma](https://www.prisma.io/) - ORM (Object-Relational Mapper)
 - [SQLite](https://www.sqlite.org/index.html) - Database (via Prisma)
 - [JSON Web Token (JWT)](https://jwt.io/) - Autentikasi
@@ -107,11 +107,11 @@ Kita akan menjalankan kedua aplikasi (API dan Web) secara terpisah, keduanya dar
 
 ### A. Menjalankan `apps/api` (Backend)
 
-Mode ini menggunakan `nodemon` untuk otomatis me-restart server setiap kali ada perubahan file.
+Mode ini menggunakan `hmr` dari nestjs untuk otomatis me-restart server setiap kali ada perubahan file.
 
 ```bash
 # Dijalankan dari root
-pnpm --filter api run dev
+pnpm --filter api run start:dev
 ```
 
 Server API akan berjalan di `http://localhost:3000` (atau port yang ditentukan di `.env`).
