@@ -1,4 +1,4 @@
-@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWhsN2w4dHAwMDAwdDJlazZjZTgwbG02IiwiZW1haWwiOiJjb2JhLWVseXNpYUBnbWFpbC5jb20iLCJpYXQiOjE3NjIyOTk0NjgsImV4cCI6MTc2MjM4NTg2OH0._nKr2KO2HRbwSPy2xEglZjmMw3RgNbQCjAjBlSx1BqE
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWh5YjVxcncwMDAwdDJnNHQ4OHk2emIyIiwidXNlcm5hbWUiOiJlbHlzaWEiLCJpYXQiOjE3NjMxMDkxOTMsImV4cCI6MTc2MzE5NTU5M30.pW5F82JHFs1C5lPVCXi_lR9e9v4JRKVOfxBqlHyMIfg
 @hostname = http://localhost:3000
 
 ### Ambil semua kategori TASK_KIND
@@ -33,7 +33,7 @@ Authorization: Bearer {{authToken}}
 GET {{hostname}}/category?type=TASK_COLLECTION
 Authorization: Bearer {{authToken}}
 
-### 
+###
 @customCategoryId = cmhl7toig0002t2ekc0r91q11
 
 
@@ -63,7 +63,7 @@ POST {{hostname}}/category
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
-{ 
+{
     "title": "Individu",
     "categoryTypeName": "TASK_KIND"
 }

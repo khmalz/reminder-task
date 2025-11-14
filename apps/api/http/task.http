@@ -1,10 +1,10 @@
-@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWhsN2w4dHAwMDAwdDJlazZjZTgwbG02IiwiZW1haWwiOiJjb2JhLWVseXNpYUBnbWFpbC5jb20iLCJpYXQiOjE3NjIyOTk0NjgsImV4cCI6MTc2MjM4NTg2OH0._nKr2KO2HRbwSPy2xEglZjmMw3RgNbQCjAjBlSx1BqE
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWh5YjVxcncwMDAwdDJnNHQ4OHk2emIyIiwidXNlcm5hbWUiOiJlbHlzaWEiLCJpYXQiOjE3NjMxMDkxOTMsImV4cCI6MTc2MzE5NTU5M30.pW5F82JHFs1C5lPVCXi_lR9e9v4JRKVOfxBqlHyMIfg
 @hostname = http://localhost:3000
 
-@categoryId_Kind = cmhl7u8hh0006t2ek49rvqslw
-@categoryId_Type = cmhlwjuu00005t2q4t444ofgk
-@categoryId_Collect = cmhl7tv7l0004t2ekxdm479ed
-@categoryId_Update = cmhlwidal0003t2q4i7159uc0
+@categoryId_Kind = cmhyltvu10005t2xo0a6mhw7k
+@categoryId_Type = cmhylpk2y0001t2xotqf0xc7a
+@categoryId_Collect = cmhylq1u40003t2xovuw9oun1
+@categoryId_Update = cmhylpk2y0001t2xotqf0xc7a
 
 POST {{hostname}}/tasks
 Authorization: Bearer {{authToken}}
@@ -27,7 +27,7 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 ###
-@taskId = cmhlwwpai0001t2p8ktjphk99
+@taskId = cmhylu9em0007t2xoz82fx2ms
 
 GET {{hostname}}/tasks/{{taskId}}
 Authorization: Bearer {{authToken}}
@@ -43,7 +43,7 @@ Content-Type: application/json
     "isCompleted": true,
     "categoryIds": [
         "{{categoryId_Kind}}",
-        "{{categoryId_Update}}", 
+        "{{categoryId_Update}}",
         "{{categoryId_Collect}}"
     ]
 }
@@ -52,4 +52,3 @@ Content-Type: application/json
 
 DELETE {{hostname}}/tasks/{{taskId}}
 Authorization: Bearer {{authToken}}
-

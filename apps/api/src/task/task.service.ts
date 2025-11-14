@@ -1,5 +1,4 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Prisma } from 'generated/prisma';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
@@ -15,8 +14,21 @@ export class TaskService {
          data: {
             ...rest,
             userId: userId,
-            categories: {
-               connect: categoryIds.map(id => ({ id: id })),
+            categoryToTasks: {
+               create: categoryIds.map(categoryId => ({
+                  category: {
+                     connect: { id: categoryId },
+                  },
+               })),
+            },
+         },
+         include: {
+            categoryToTasks: {
+               include: {
+                  category: {
+                     select: { id: true, title: true, typeId: true },
+                  },
+               },
             },
          },
       });
@@ -27,8 +39,12 @@ export class TaskService {
          where: { userId },
          orderBy: { createdAt: 'desc' },
          include: {
-            categories: {
-               select: { id: true, title: true, typeId: true },
+            categoryToTasks: {
+               include: {
+                  category: {
+                     select: { id: true, title: true, typeId: true },
+                  },
+               },
             },
          },
       });
@@ -38,8 +54,12 @@ export class TaskService {
       const task = await this.prisma.task.findFirst({
          where: { id: taskId, userId },
          include: {
-            categories: {
-               select: { id: true, title: true, typeId: true },
+            categoryToTasks: {
+               include: {
+                  category: {
+                     select: { id: true, title: true, typeId: true },
+                  },
+               },
             },
          },
       });
@@ -59,17 +79,48 @@ export class TaskService {
       }
 
       const { categoryIds, ...rest } = dto;
-      const updateData: Prisma.TaskUpdateInput = rest;
 
-      if (categoryIds) {
-         updateData.categories = {
-            set: categoryIds.map(id => ({ id: id })),
-         };
+      if (categoryIds !== undefined) {
+         await this.prisma.categoryToTask.deleteMany({
+            where: { taskId },
+         });
+
+         return this.prisma.task.update({
+            where: { id: taskId },
+            data: {
+               ...rest,
+               categoryToTasks: {
+                  create: categoryIds.map(categoryId => ({
+                     category: {
+                        connect: { id: categoryId },
+                     },
+                  })),
+               },
+            },
+            include: {
+               categoryToTasks: {
+                  include: {
+                     category: {
+                        select: { id: true, title: true, typeId: true },
+                     },
+                  },
+               },
+            },
+         });
       }
 
       return this.prisma.task.update({
          where: { id: taskId },
-         data: updateData,
+         data: rest,
+         include: {
+            categoryToTasks: {
+               include: {
+                  category: {
+                     select: { id: true, title: true, typeId: true },
+                  },
+               },
+            },
+         },
       });
    }
 
