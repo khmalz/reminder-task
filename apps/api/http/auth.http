@@ -3,7 +3,7 @@ POST http://localhost:3000/auth/register
 Content-Type: application/json
 
 {
-    "email": "coba-elysia@gmail.com",
+    "username": "elysia",
     "password": "password123",
     "name": "Elysia Tester"
 }
@@ -14,7 +14,7 @@ POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-    "email": "coba-elysia@gmail.com",
+    "username": "elysia",
     "password": "password123"
 }
 

@@ -13,21 +13,21 @@ export class AuthService {
    ) {}
 
    async register(registerDto: RegisterDto) {
-      const { email, password, name } = registerDto;
+      const { username, password, name } = registerDto;
 
       const userExists = await this.prisma.user.findUnique({
-         where: { email },
+         where: { username },
       });
 
       if (userExists) {
-         throw new ConflictException('Email sudah terdaftar');
+         throw new ConflictException('Username sudah terdaftar');
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
 
       const newUser = await this.prisma.user.create({
          data: {
-            email,
+            username,
             name,
             password: hashedPassword,
          },
@@ -39,23 +39,23 @@ export class AuthService {
    }
 
    async login(loginDto: LoginDto) {
-      const { email, password } = loginDto;
+      const { username, password } = loginDto;
 
       const user = await this.prisma.user.findUnique({
-         where: { email },
+         where: { username },
       });
 
       if (!user) {
-         throw new UnauthorizedException('Email atau password salah');
+         throw new UnauthorizedException('Username atau password salah');
       }
 
       const isPasswordValid = await bcrypt.compare(password, user.password);
 
       if (!isPasswordValid) {
-         throw new UnauthorizedException('Email atau password salah');
+         throw new UnauthorizedException('Username atau password salah');
       }
 
-      const payload = { sub: user.id, email: user.email };
+      const payload = { sub: user.id, username: user.username };
 
       return {
          access_token: await this.jwtService.signAsync(payload),
