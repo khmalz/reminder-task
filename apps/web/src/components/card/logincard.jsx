@@ -30,11 +30,11 @@ export default function LoginCard() {
       setError("");
       try {
          if (!formData.username || !formData.password) {
-            throw new Error("Username Atau Password Tidak Boleh Kosong");
+            throw new Error("Username Atau Password Tidak Boleh Kosong!");
          }
 
          if (formData.username !== DUMMY_DATA.username && formData.password !== DUMMY_DATA.password) {
-            throw new Error("Username Atau Password Salah");
+            throw new Error("Username Atau Password Salah!");
          }
 
          router.push("/dashboard");
@@ -45,12 +45,14 @@ export default function LoginCard() {
    };
 
    return (
-      <div className="bg-secondary flex flex-col items-center justify-center gap-3 rounded-4xl px-10 py-10">
+      <div className="bg-secondary flex flex-col items-center justify-center gap-4 rounded-4xl px-10 py-10">
          <p className="text-primary w-xs text-center text-base">Masukkan username dan password untuk mengakses akunmu.</p>
-         {error && <div className="w-full rounded-lg bg-red-100 border-2 border-red-400 p-3 text-center text-sm text-red-600">{error}</div>}
-         <form action="" onSubmit={handleSubmit} className="flex w-full flex-col">
+         {error && <div className="w-full rounded-lg border-2 border-red-400 bg-red-100 p-2 text-center text-sm text-red-600">{error}</div>}
+         <form action="" onSubmit={handleSubmit} className="flex w-full flex-col gap-2.5">
             <div className="w-full space-y-2">
-               <label htmlFor="username">Username</label>
+               <label htmlFor="username" className="text-accent">
+                  Username
+               </label>
                <input
                   type="text"
                   name="username"
@@ -59,12 +61,14 @@ export default function LoginCard() {
                   onChange={handleChange}
                   value={formData.username}
                   placeholder="Username Kamu"
-                  className="bg-background text-primary w-full rounded-lg px-3 py-2 outline-none focus:ring"
+                  className="bg-background text-primary w-full rounded-md px-2.5 py-1.5 outline-none focus:ring"
                />
             </div>
 
             <div className="w-full space-y-2">
-               <label htmlFor="username">Password</label>
+               <label htmlFor="username" className="text-accent">
+                  Password
+               </label>
                <div className="relative">
                   <input
                      type={showPassword ? "text" : "password"}
@@ -74,15 +78,15 @@ export default function LoginCard() {
                      onChange={handleChange}
                      value={formData.password}
                      placeholder="Password Kamu"
-                     className="bg-background text-primary w-full rounded-lg px-3 py-2 outline-none focus:ring"
+                     className="bg-background text-primary w-full rounded-md px-2.5 py-1.5 outline-none focus:ring"
                   />
-                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="text-primary absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer">
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="text-primary absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer hover:brightness-150">
                      {showPassword ? <EyeOff /> : <Eye />}
                   </button>
                </div>
             </div>
 
-            <button type="submit" disabled={isLoading} className="bg-primary mt-2 cursor-pointer rounded-lg py-2">
+            <button type="submit" disabled={isLoading} className="bg-primary mt-2 cursor-pointer rounded-lg py-2 hover:brightness-85">
                <h2 className="text-xl font-semibold">Log In</h2>
             </button>
          </form>
@@ -90,7 +94,7 @@ export default function LoginCard() {
             <p className="font-light">
                Belum Punya Akun?{" "}
                <span>
-                  <a className="text-primary font-semibold underline" href="#">
+                  <a className="text-primary font-semibold hover:underline" href="/signin">
                      Sign In
                   </a>
                </span>

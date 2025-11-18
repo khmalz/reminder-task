@@ -1,4 +1,4 @@
-import LoginCard from "@/components/card/logincard";
+import SigninCard from "@/components/card/signincard";
 
 export default function LoginPage() {
    return (
@@ -8,7 +8,7 @@ export default function LoginPage() {
                <h1 className="text-primary font-belanosima text-5xl font-semibold">TASK.IO</h1>
                <h3 className="text-primary font-belanosima text-2xl">Make Clean Your Task</h3>
             </div>
-            <LoginCard />
+            <SigninCard />
          </div>
       </>
    );
