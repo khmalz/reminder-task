@@ -1,0 +1,101 @@
+"use client";
+
+import { EyeOff, Eye } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+export default function LoginCard() {
+   const DUMMY_DATA = {
+      username: "giwnk__",
+      password: "giwank796",
+   };
+
+   const router = useRouter();
+   const [formData, setFormData] = useState({
+      username: "",
+      password: "",
+   });
+   const [showPassword, setShowPassword] = useState(false);
+   const [isLoading, setIsLoading] = useState(false);
+   const [error, setError] = useState("");
+
+   const handleChange = e => {
+      const { name, value } = e.target;
+      setFormData(prev => ({ ...prev, [name]: value }));
+   };
+
+   const handleSubmit = e => {
+      e.preventDefault();
+      setIsLoading(true);
+      setError("");
+      try {
+         if (!formData.username || !formData.password) {
+            throw new Error("Username Atau Password Tidak Boleh Kosong");
+         }
+
+         if (formData.username !== DUMMY_DATA.username && formData.password !== DUMMY_DATA.password) {
+            throw new Error("Username Atau Password Salah");
+         }
+
+         router.push("/dashboard");
+      } catch (error) {
+         setError(error.message);
+         setIsLoading(false);
+      }
+   };
+
+   return (
+      <div className="bg-secondary flex flex-col items-center justify-center gap-3 rounded-4xl px-10 py-10">
+         <p className="text-primary w-xs text-center text-base">Masukkan username dan password untuk mengakses akunmu.</p>
+         {error && <div className="w-full rounded-lg bg-red-100 border-2 border-red-400 p-3 text-center text-sm text-red-600">{error}</div>}
+         <form action="" onSubmit={handleSubmit} className="flex w-full flex-col">
+            <div className="w-full space-y-2">
+               <label htmlFor="username">Username</label>
+               <input
+                  type="text"
+                  name="username"
+                  id="username"
+                  disabled={isLoading}
+                  onChange={handleChange}
+                  value={formData.username}
+                  placeholder="Username Kamu"
+                  className="bg-background text-primary w-full rounded-lg px-3 py-2 outline-none focus:ring"
+               />
+            </div>
+
+            <div className="w-full space-y-2">
+               <label htmlFor="username">Password</label>
+               <div className="relative">
+                  <input
+                     type={showPassword ? "text" : "password"}
+                     name="password"
+                     disabled={isLoading}
+                     id="password"
+                     onChange={handleChange}
+                     value={formData.password}
+                     placeholder="Password Kamu"
+                     className="bg-background text-primary w-full rounded-lg px-3 py-2 outline-none focus:ring"
+                  />
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="text-primary absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer">
+                     {showPassword ? <EyeOff /> : <Eye />}
+                  </button>
+               </div>
+            </div>
+
+            <button type="submit" disabled={isLoading} className="bg-primary mt-2 cursor-pointer rounded-lg py-2">
+               <h2 className="text-xl font-semibold">Log In</h2>
+            </button>
+         </form>
+         <div>
+            <p className="font-light">
+               Belum Punya Akun?{" "}
+               <span>
+                  <a className="text-primary font-semibold underline" href="#">
+                     Sign In
+                  </a>
+               </span>
+            </p>
+         </div>
+      </div>
+   );
+}

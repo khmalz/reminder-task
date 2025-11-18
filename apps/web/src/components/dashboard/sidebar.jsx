@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Shield, User } from "lucide-react";
+import { LayoutDashboard, Shield, User, Tag } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function DashboardSidebar() {
@@ -22,7 +22,7 @@ export function DashboardSidebar() {
    ];
 
    return (
-      <aside className="bg-muted flex h-screen w-[220px] flex-col">
+      <aside className="bg-muted flex h-screen w-[220px] flex-col rounded-r-2xl">
          {/* Logo Section */}
          <div className="px-6 py-8 text-center">
             <h1 className="font-belanosima text-primary text-4xl font-bold tracking-tight">TASK.IO</h1>
@@ -45,7 +45,7 @@ export function DashboardSidebar() {
 
          {/* Profile Section */}
          <div className="p-4">
-            <Link href="/profile" className="text-primary hover:bg-secondary flex items-center gap-3 rounded-lg px-4 py-3 transition-colors">
+            <Link href="/dashboard/profile" className="text-primary hover:bg-secondary flex items-center gap-3 rounded-lg px-4 py-3 transition-colors">
                <User className="h-5 w-5" />
                <span className="font-medium">Profil</span>
             </Link>
