@@ -7,6 +7,7 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { GetCategoryQueryDto } from './dto/get-category-query.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CreateCategorySwagger, FindAllCategoriesSwagger, UpdateCategorySwagger, DeleteCategorySwagger } from './swagger/category.swagger';
+import { CategoryIdParamDto } from './dto/category-id-param.dto';
 
 @ApiTags('Categories')
 @Controller('category')
@@ -35,13 +36,13 @@ export class CategoryController {
 
    @Put(':id')
    @UpdateCategorySwagger()
-   update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto, @GetUser('userid') userId: string) {
-      return this.categoryService.update(id, userId, updateCategoryDto);
+   update(@Param() params: CategoryIdParamDto, @Body() updateCategoryDto: UpdateCategoryDto, @GetUser('userid') userId: string) {
+      return this.categoryService.update(params.id, userId, updateCategoryDto);
    }
 
    @Delete(':id')
    @DeleteCategorySwagger()
-   remove(@Param('id') id: string, @GetUser('userid') userId: string) {
-      return this.categoryService.remove(id, userId);
+   remove(@Param() params: CategoryIdParamDto, @GetUser('userid') userId: string) {
+      return this.categoryService.remove(params.id, userId);
    }
 }

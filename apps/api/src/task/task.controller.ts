@@ -1,11 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
-import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
-import { TaskService } from './task.service';
-import { CreateTaskDto } from './dto/create-task.dto';
-import { UpdateTaskDto } from './dto/update-task.dto';
-import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { GetUser } from 'src/auth/decorators/get-user.decorator';
-import { CreateTaskSwagger, FindAllTasksSwagger, FindOneTaskSwagger, UpdateTaskSwagger, DeleteTaskSwagger } from './swagger/task.swagger';
+import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
+import { CreateTaskDto } from './dto/create-task.dto';
+import { TaskIdParamDto } from './dto/task-id-param.dto';
+import { UpdateTaskDto } from './dto/update-task.dto';
+import { CreateTaskSwagger, DeleteTaskSwagger, FindAllTasksSwagger, FindOneTaskSwagger, UpdateTaskSwagger } from './swagger/task.swagger';
+import { TaskService } from './task.service';
 
 @ApiTags('Tasks')
 @Controller('tasks')
@@ -34,19 +35,19 @@ export class TaskController {
 
    @Get(':id')
    @FindOneTaskSwagger()
-   findOne(@Param('id') id: string, @GetUser('userid') userId: string) {
-      return this.taskService.findOne(id, userId);
+   findOne(@Param() params: TaskIdParamDto, @GetUser('userid') userId: string) {
+      return this.taskService.findOne(params.id, userId);
    }
 
    @Patch(':id')
    @UpdateTaskSwagger()
-   update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto, @GetUser('userid') userId: string) {
-      return this.taskService.update(id, userId, updateTaskDto);
+   update(@Param() params: TaskIdParamDto, @Body() updateTaskDto: UpdateTaskDto, @GetUser('userid') userId: string) {
+      return this.taskService.update(params.id, userId, updateTaskDto);
    }
 
    @Delete(':id')
    @DeleteTaskSwagger()
-   remove(@Param('id') id: string, @GetUser('userid') userId: string) {
-      return this.taskService.remove(id, userId);
+   remove(@Param() params: TaskIdParamDto, @GetUser('userid') userId: string) {
+      return this.taskService.remove(params.id, userId);
    }
 }
