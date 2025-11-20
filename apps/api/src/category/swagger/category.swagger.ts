@@ -82,7 +82,7 @@ export function FindAllCategoriesSwagger() {
                   id: 'cmhylq1u40003t2xovuw9oun1',
                   title: 'Meeting',
                   typeId: 2,
-                  userId: null,
+                  userId: 'cmhyb5qrw0000t2g4t88y6zb2',
                   createdAt: '2025-11-14T08:34:07.180Z',
                   updatedAt: '2025-11-14T08:34:07.180Z',
                },

@@ -38,7 +38,7 @@ export class CategoryService {
       const categories = await this.prisma.category.findMany({
          where: {
             typeId: typeId,
-            OR: [{ userId: null }, { userId: userId }],
+            userId: userId,
          },
          orderBy: { title: 'asc' },
       });

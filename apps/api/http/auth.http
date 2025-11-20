@@ -3,9 +3,9 @@ POST http://localhost:3000/auth/register
 Content-Type: application/json
 
 {
-    "username": "elysia",
+    "username": "user",
     "password": "password123",
-    "name": "Elysia Tester"
+    "name": "User Tester"
 }
 
 ###
@@ -14,7 +14,7 @@ POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-    "username": "elysia",
+    "username": "user",
     "password": "password123"
 }
 
