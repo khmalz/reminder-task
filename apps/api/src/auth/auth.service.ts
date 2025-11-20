@@ -33,6 +33,37 @@ export class AuthService {
          },
       });
 
+      // Create default categories for the new user
+      const defaultCategoriesByType: Record<string, string[]> = {
+         TASK_KIND: ['Makalah', 'PPT'],
+         TASK_TYPE: ['Individu', 'Kelompok'],
+         TASK_COLLECTION: ['Drive', 'LMS'],
+      };
+
+      for (const [typeName, titles] of Object.entries(defaultCategoriesByType)) {
+         const type = await this.prisma.categoryType.findUnique({ where: { name: typeName } });
+         if (!type) {
+            // If the category type doesn't exist, skip it (should be seeded separately)
+            continue;
+         }
+
+         for (const title of titles) {
+            const exists = await this.prisma.category.findFirst({
+               where: { title, typeId: type.id, userId: newUser.id },
+            });
+
+            if (!exists) {
+               await this.prisma.category.create({
+                  data: {
+                     title,
+                     typeId: type.id,
+                     userId: newUser.id,
+                  },
+               });
+            }
+         }
+      }
+
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password: _, ...result } = newUser;
       return result;
