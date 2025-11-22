@@ -1,9 +1,15 @@
-@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWh5YjVxcncwMDAwdDJnNHQ4OHk2emIyIiwidXNlcm5hbWUiOiJlbHlzaWEiLCJpYXQiOjE3NjMxMDkxOTMsImV4cCI6MTc2MzE5NTU5M30.pW5F82JHFs1C5lPVCXi_lR9e9v4JRKVOfxBqlHyMIfg
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiJjbWk3bzB4em8wMDAwdDI0c3VoM20waWs1IiwidXNlcm5hbWUiOiJ1c2VyIiwiaWF0IjoxNzYzODE2ODE4LCJleHAiOjE3NjM5MDMyMTh9.ZZLm4_01VrForDQFTzeyyx--9IUjLmc8US7NifhlXhc
 @hostname = http://localhost:3000
 
-@categoryId_Kind = cmhyltvu10005t2xo0a6mhw7k
-@categoryId_Type = cmhylpk2y0001t2xotqf0xc7a
-@categoryId_Collect = cmhylq1u40003t2xovuw9oun1
+# Makalah
+@categoryId_Kind = cmi7o0y0j0002t24sgxrospbu
+# Individu
+@categoryId_Type = cmi7o0y1k0006t24ss74aby1n
+# Drive
+@categoryId_Collect = cmi7o0y2d000at24s6dxbf6pg
+
+
+
 @categoryId_Update = cmhylpk2y0001t2xotqf0xc7a
 
 POST {{hostname}}/tasks
@@ -11,7 +17,7 @@ Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
 {
-    "title": "Selesaikan coding task routes (v2 - Many-to-Many)",
+    "title": "Selesaikan makalah",
     "isCompleted": false,
     "categoryIds": [
         "{{categoryId_Kind}}",
@@ -22,14 +28,30 @@ Content-Type: application/json
 
 ###
 
+@taskId=cmiab1w2q0001t2uw3g5b5vme
+
+###
+
+#Selesaikan
+
+PATCH {{hostname}}/tasks/{{taskId}}
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+    "isCompleted": true
+}
+
+###
+
 GET {{hostname}}/tasks
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 ###
-@taskId = cmhylu9em0007t2xoz82fx2ms
 
 GET {{hostname}}/tasks/{{taskId}}
+Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 ###
