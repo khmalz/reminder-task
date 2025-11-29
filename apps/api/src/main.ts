@@ -34,6 +34,7 @@ Most endpoints require Bearer token authentication. Use the /auth/login endpoint
       .addTag('Authentication', 'User authentication endpoints')
       .addTag('Tasks', 'Task management endpoints')
       .addTag('Categories', 'Category management endpoints')
+      .addTag('Profile', 'User profile management endpoints')
       .build();
 
    const document = SwaggerModule.createDocument(app, config);
