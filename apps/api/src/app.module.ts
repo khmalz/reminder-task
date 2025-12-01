@@ -7,6 +7,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { PrismaService } from './prisma/prisma.service';
 import { CategoryModule } from './category/category.module';
 import { TaskModule } from './task/task.module';
+import { ProfileModule } from './profile/profile.module';
 
 @Module({
    imports: [
@@ -17,6 +18,7 @@ import { TaskModule } from './task/task.module';
       AuthModule,
       CategoryModule,
       TaskModule,
+      ProfileModule,
    ],
    controllers: [AppController],
    providers: [AppService, PrismaService],

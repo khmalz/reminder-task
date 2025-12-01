@@ -1,0 +1,51 @@
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiJjbWlqeXY2b24wMDAwdDI3MDRhZncyMnV2IiwidXNlcm5hbWUiOiJlbHlzaWEiLCJpYXQiOjE3NjQ0MDExMTUsImV4cCI6MTc2NDQ4NzUxNX0.pFavZuqDAR4XPP33BJY8Zhnve5X1xFpMbVVqywTZGjE
+@hostname = http://localhost:3000
+
+### Update Profile (username and name)
+PATCH {{hostname}}/profile
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "username": "elysia_final",
+    "name": "Elysia Final Name"
+}
+
+### Update Password (correct old password)
+PATCH {{hostname}}/profile/password
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "oldPassword": "newpassword123",
+    "newPassword": "anothernewpassword123"
+}
+
+### Update Password - Wrong old password (should fail with 401)
+PATCH {{hostname}}/profile/password
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "oldPassword": "wrongpassword",
+    "newPassword": "shouldnotwork123"
+}
+
+### Update Profile - Empty fields (should fail with 400)
+PATCH {{hostname}}/profile
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "username": "",
+    "name": ""
+}
+
+### Update Profile - Without token (should fail with 401)
+PATCH {{hostname}}/profile
+Content-Type: application/json
+
+{
+    "username": "should_fail",
+    "name": "Should Fail"
+}
