@@ -47,7 +47,7 @@ export function DashboardSidebar() {
          <div className="p-4">
             <Link href="/dashboard/profile" className="text-primary hover:bg-secondary flex items-center gap-3 rounded-lg px-4 py-3 transition-colors">
                <User className="h-5 w-5" />
-               <span className="font-medium">Profil</span>
+               <span className="font-semibold">Profil</span>
             </Link>
          </div>
       </aside>

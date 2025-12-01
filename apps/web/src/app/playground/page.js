@@ -1,9 +1,10 @@
-import AddCategoryDialog from "@/components/dialog/categorydialog";
-
+import { ProfileNavbar } from "@/components/dashboard/profilenavbar";
+import  EditProfileDialog  from "@/components/dialog/editprofiledialog";
+import CalendarWidget from "@/components/widget/calendarwidget";
 export default function Playground() {
    return (
-      <div>
-         <AddCategoryDialog isOpen={true} title={"Add Category"} />
+      <div className="bg-background flex min-h-screen items-center justify-center">
+         <CalendarWidget />
       </div>
    );
 }

@@ -21,13 +21,13 @@ export default function LabelsPage() {
    const [activeColumn, setActiveColumn] = useState("");
    const [activeItemId, setActiveItemId] = useState(null);
 
-   const handleAddClick = columnName => {
+   const handleAddClick = (columnName) => {
       setIsEditMode(false);
       setActiveColumn(columnName);
       setDialogInput("");
       setIsDialogOpen(true);
    };
-
+      
    const handleEditClick = (columnName, item) => {
       setIsEditMode(true);
       setActiveColumn(columnName);

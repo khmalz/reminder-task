@@ -4,7 +4,7 @@ export default function AddCategoryDialog({ isOpen, title, inputValue, setInputV
    if (!isOpen) return null;
    return (
       <>
-         <div className="bg-primary/10 fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm">
+         <div className="bg-primary/60 fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm">
             <div className="bg-secondary flex w-md flex-col gap-6 rounded-xl p-6 shadow-2xl">
                <h2 className="text-accent mx-auto text-2xl font-semibold">{title}</h2>
 
