@@ -83,7 +83,7 @@ export default function LabelsPage() {
                         <div className="mt-5 flex flex-col gap-3">
                            {columns[colKey].map(item => (
                               <div key={item.id} onClick={() => handleEditClick(colKey, item)} className="group bg-primary text-accent flex cursor-pointer items-center justify-around rounded-lg px-4 py-3 shadow-md transition-all hover:translate-x-1">
-                                 <div className="flex text-base font-semibold">
+                                 <div className="flex text-base w-full justify-between font-semibold">
                                     {item.label}
                                     <ChevronRightIcon />
                                  </div>
