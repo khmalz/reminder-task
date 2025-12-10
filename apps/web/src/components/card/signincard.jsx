@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function SigninCard() {
-   const EXISTING_USERS = [{ username: "giwnk__" }, { username: "admin" }, { username: "superman" }];
+   // const EXISTING_USERS = [{ username: "giwnk__" }, { username: "admin" }, { username: "superman" }];
 
    const router = useRouter();
    const [formData, setFormData] = useState({
@@ -24,30 +24,47 @@ export default function SigninCard() {
       setFormData(prev => ({ ...prev, [name]: value }));
    };
 
-   const handleSubmit = e => {
+   const handleSubmit = async e => {
       e.preventDefault();
       setIsLoading(true);
       setError("");
+
       try {
          if (!formData.fullname || !formData.username || !formData.password || !formData.confirmPassword) {
             throw new Error("Formulir Tidak Boleh Kosong");
-            return
+            return;
          }
 
          if (formData.password !== formData.confirmPassword) {
             throw new Error("Konfirmasi Password Anda Salah");
-            return
+            return;
          }
 
-         const isUsernameTaken = EXISTING_USERS.find((user) => user.username.toLowerCase() === formData.username)
-         if (isUsernameTaken) {
-            throw new Error("Username Sudah Digunakan");
-            return
+         const dataReq = {
+            username: formData.username,
+            name: formData.fullname,
+            password: formData.password,
+         };
+
+         const res = await fetch("http://localhost:3000/auth/register", {
+            method: "POST",
+            headers: {
+               "Content-Type": "application/json",
+            },
+            body: JSON.stringify(dataReq),
+         });
+
+         if (res.ok) {
+            const data = await res.json();
+            alert(`Sukses! ID Post baru: ${data.id}`);
+         } else {
+            throw new Error("Gagal Mengirim data");
          }
 
-         router.push("/dashboard");
+         router.push("/login");
       } catch (error) {
          setError(error.message);
+      } finally {
          setIsLoading(false);
       }
    };

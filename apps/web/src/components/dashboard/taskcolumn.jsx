@@ -9,10 +9,10 @@ const TaskColumn = ({ title, tasks, onAdd, onDetail }) => {
 
          <button onClick={onAdd} className="flex items-center justify-center w-70 gap-2 rounded-lg bg-primary py-2 font-semibold text-accent shadow-md transition hover:brightness-125 cursor-pointer active:scale-95">
             Tambah Tugas <Plus size={16} />
-         </button>
+         </button> 
 
          <div className="flex min-h-[200px] flex-col gap-3">
-            {tasks.length === 0 && <div className="rounded-lg border-2 border-dashed border-slate-300 py-4 text-center text-sm text-slate-400 italic">Tidak ada tugas</div>}
+            {tasks.length === 0 && <div className="rounded-lg  py-4 text-center text-sm text-primary font-medium opacity-75 italic">Tidak ada tugas</div>}
             {tasks.map(task => (
                <TaskCard key={task.id} task={task} onClick={onDetail} />
             ))}

@@ -24,24 +24,49 @@ export default function LoginCard() {
       setFormData(prev => ({ ...prev, [name]: value }));
    };
 
-   const handleSubmit = e => {
+   const handleSubmit = async e => {
       e.preventDefault();
       setIsLoading(true);
       setError("");
       try {
          if (!formData.username || !formData.password) {
             throw new Error("Username Atau Password Tidak Boleh Kosong!");
-            return
+            return;
          }
 
-         if (formData.username !== DUMMY_DATA.username && formData.password !== DUMMY_DATA.password) {
-            throw new Error("Username Atau Password Salah!");
-            return
-         }
+         const res = await fetch("http://localhost:3000/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+               username: formData.username,
+               password: formData.password,
+            }),
+         });
 
+         const data = await res.json();
+
+         if (res.ok) {
+            // --- SKENARIO 200 (SUCCESS) ---
+            // Sesuai screenshot: key-nya adalah "access_token"
+            localStorage.setItem("token", data.access_token);
+
+            console.log("Login sukses, token disimpan:", data.access_token);
+            router.push("/dashboard");
+         } else {
+            if (Array.isArray(data.message)) {
+               // Gabungkan array menjadi satu kalimat dengan koma
+               setError(data.message.join(", "));
+            } else if (typeof data.message === "string") {
+               setError(data.message);
+            } else {
+               setError("Terjadi kesalahan saat login.");
+            }
+         }
          router.push("/dashboard");
       } catch (error) {
-         setError(error.message);
+         console.error("Network error:", err);
+         setError("Gagal menghubungi server. Periksa koneksi internet.");
+      } finally {
          setIsLoading(false);
       }
    };

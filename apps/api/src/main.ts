@@ -46,6 +46,7 @@ Most endpoints require Bearer token authentication. Use the /auth/login endpoint
       },
    });
 
+   app.enableCors();
    await app.listen(process.env.PORT ?? 3000);
 }
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
