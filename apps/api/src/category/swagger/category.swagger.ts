@@ -1,10 +1,11 @@
 import { applyDecorators } from '@nestjs/common';
-import { ApiOperation, ApiBody, ApiResponse, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { CreateCategoryDto } from '../dto/create-category.dto';
 import { UpdateCategoryDto } from '../dto/update-category.dto';
 
 export function CreateCategorySwagger() {
    return applyDecorators(
+      ApiBearerAuth('bearer'),
       ApiOperation({ summary: 'Create a new custom category' }),
       ApiBody({ type: CreateCategoryDto }),
       ApiResponse({
@@ -58,6 +59,7 @@ export function CreateCategorySwagger() {
 
 export function FindAllCategoriesSwagger() {
    return applyDecorators(
+      ApiBearerAuth('bearer'),
       ApiOperation({ summary: 'Get all categories by type' }),
       ApiQuery({
          name: 'type',
@@ -126,6 +128,7 @@ export function FindAllCategoriesSwagger() {
 
 export function UpdateCategorySwagger() {
    return applyDecorators(
+      ApiBearerAuth('bearer'),
       ApiOperation({ summary: 'Update a custom category' }),
       ApiParam({
          name: 'id',
@@ -195,6 +198,7 @@ export function UpdateCategorySwagger() {
 
 export function DeleteCategorySwagger() {
    return applyDecorators(
+      ApiBearerAuth('bearer'),
       ApiOperation({ summary: 'Delete a custom category' }),
       ApiParam({
          name: 'id',

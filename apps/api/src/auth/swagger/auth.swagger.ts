@@ -1,7 +1,7 @@
 import { applyDecorators } from '@nestjs/common';
-import { ApiOperation, ApiBody, ApiResponse } from '@nestjs/swagger';
-import { RegisterDto } from '../dto/register.dto';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { LoginDto } from '../dto/login.dto';
+import { RegisterDto } from '../dto/register.dto';
 
 export function RegisterSwagger() {
    return applyDecorators(
@@ -55,6 +55,10 @@ export function LoginSwagger() {
          schema: {
             example: {
                access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+               user: {
+                  username: 'johndoe',
+                  name: 'John Doe',
+               },
             },
          },
       }),
@@ -85,6 +89,7 @@ export function LoginSwagger() {
 
 export function LogoutSwagger() {
    return applyDecorators(
+      ApiBearerAuth('bearer'),
       ApiOperation({ summary: 'Logout (invalidate token on client side)' }),
       ApiResponse({
          status: 200,

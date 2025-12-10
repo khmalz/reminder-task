@@ -1,10 +1,11 @@
 import { applyDecorators } from '@nestjs/common';
-import { ApiOperation, ApiBody, ApiResponse, ApiParam } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { CreateTaskDto } from '../dto/create-task.dto';
 import { UpdateTaskDto } from '../dto/update-task.dto';
 
 export function CreateTaskSwagger() {
    return applyDecorators(
+      ApiBearerAuth('bearer'),
       ApiOperation({ summary: 'Create a new task' }),
       ApiBody({ type: CreateTaskDto }),
       ApiResponse({
@@ -20,21 +21,17 @@ export function CreateTaskSwagger() {
                updatedAt: '2025-11-14T08:37:23.614Z',
                categoryToTasks: [
                   {
-                     categoryId: 'cmhylq1u40003t2xovuw9oun1',
-                     taskId: 'cmhylu9em0007t2xoz82fx2ms',
                      category: {
                         id: 'cmhylq1u40003t2xovuw9oun1',
                         title: 'Zoom Link',
-                        typeId: 3,
+                        typeName: 'TASK_COLLECTION',
                      },
                   },
                   {
-                     categoryId: 'cmhylpk2y0001t2xotqf0xc7a',
-                     taskId: 'cmhylu9em0007t2xoz82fx2ms',
                      category: {
                         id: 'cmhylpk2y0001t2xotqf0xc7a',
                         title: 'Solo Work',
-                        typeId: 2,
+                        typeName: 'TASK_TYPE',
                      },
                   },
                ],
@@ -67,6 +64,7 @@ export function CreateTaskSwagger() {
 
 export function FindAllTasksSwagger() {
    return applyDecorators(
+      ApiBearerAuth('bearer'),
       ApiOperation({ summary: 'Get all tasks for the authenticated user' }),
       ApiResponse({
          status: 200,
@@ -82,12 +80,10 @@ export function FindAllTasksSwagger() {
                   updatedAt: '2025-11-14T08:37:23.614Z',
                   categoryToTasks: [
                      {
-                        categoryId: 'cmhylq1u40003t2xovuw9oun1',
-                        taskId: 'cmhylu9em0007t2xoz82fx2ms',
                         category: {
                            id: 'cmhylq1u40003t2xovuw9oun1',
                            title: 'Zoom Link',
-                           typeId: 3,
+                           typeName: 'TASK_COLLECTION',
                         },
                      },
                   ],
@@ -110,6 +106,7 @@ export function FindAllTasksSwagger() {
 
 export function FindOneTaskSwagger() {
    return applyDecorators(
+      ApiBearerAuth('bearer'),
       ApiOperation({ summary: 'Get a specific task by ID' }),
       ApiParam({
          name: 'id',
@@ -129,12 +126,10 @@ export function FindOneTaskSwagger() {
                updatedAt: '2025-11-14T08:37:23.614Z',
                categoryToTasks: [
                   {
-                     categoryId: 'cmhylq1u40003t2xovuw9oun1',
-                     taskId: 'cmhylu9em0007t2xoz82fx2ms',
                      category: {
                         id: 'cmhylq1u40003t2xovuw9oun1',
                         title: 'Zoom Link',
-                        typeId: 3,
+                        typeName: 'TASK_COLLECTION',
                      },
                   },
                ],
@@ -167,6 +162,7 @@ export function FindOneTaskSwagger() {
 
 export function UpdateTaskSwagger() {
    return applyDecorators(
+      ApiBearerAuth('bearer'),
       ApiOperation({ summary: 'Update a task' }),
       ApiParam({
          name: 'id',
@@ -187,12 +183,10 @@ export function UpdateTaskSwagger() {
                updatedAt: '2025-11-14T08:38:04.733Z',
                categoryToTasks: [
                   {
-                     categoryId: 'cmhylq1u40003t2xovuw9oun1',
-                     taskId: 'cmhylu9em0007t2xoz82fx2ms',
                      category: {
                         id: 'cmhylq1u40003t2xovuw9oun1',
                         title: 'Zoom Link',
-                        typeId: 3,
+                        typeName: 'TASK_COLLECTION',
                      },
                   },
                ],
@@ -236,6 +230,7 @@ export function UpdateTaskSwagger() {
 
 export function DeleteTaskSwagger() {
    return applyDecorators(
+      ApiBearerAuth('bearer'),
       ApiOperation({ summary: 'Delete a task' }),
       ApiParam({
          name: 'id',

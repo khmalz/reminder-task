@@ -1,10 +1,11 @@
 import { applyDecorators } from '@nestjs/common';
-import { ApiOperation, ApiBody, ApiResponse } from '@nestjs/swagger';
-import { UpdateProfileDto } from '../dto/update-profile.dto';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UpdatePasswordDto } from '../dto/update-password.dto';
+import { UpdateProfileDto } from '../dto/update-profile.dto';
 
 export function UpdateProfileSwagger() {
    return applyDecorators(
+      ApiBearerAuth('bearer'),
       ApiOperation({ summary: 'Update user profile (username and name)' }),
       ApiBody({ type: UpdateProfileDto }),
       ApiResponse({
@@ -68,6 +69,7 @@ export function UpdateProfileSwagger() {
 
 export function UpdatePasswordSwagger() {
    return applyDecorators(
+      ApiBearerAuth('bearer'),
       ApiOperation({ summary: 'Update user password' }),
       ApiBody({ type: UpdatePasswordDto }),
       ApiResponse({
