@@ -12,7 +12,7 @@ export default function ProfilePage() {
    const [dialogInputName, setDialogInputName] = useState("");
    const [dialogInputUsername, setDialogInputUsername] = useState("");
 
-   const handleEditClick = (info) => {
+   const handleEditClick = info => {
       setDialogInputName(info.fullname)
       setDialogInputUsername(info.username)
       setDialogOpen(true)

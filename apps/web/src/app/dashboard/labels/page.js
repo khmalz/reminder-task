@@ -3,7 +3,7 @@
 import CategoryDialog from "@/components/dialog/categorydialog";
 import { ChevronRightIcon } from "lucide-react";
 import { Plus } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 export default function LabelsPage() {
    const types = useMemo(

@@ -53,15 +53,21 @@ export default function SigninCard() {
             },
             body: JSON.stringify(dataReq),
          });
+         const data = await res.json();
 
          if (res.ok) {
-            const data = await res.json();
-            alert(`Sukses! ID Post baru: ${data.id}`);
+            alert(`Akun Sukses diDaftar!`);
+            router.push("/login");
          } else {
-            throw new Error("Gagal Mengirim data");
+            if (Array.isArray(data.message)) {
+               // Gabungkan array menjadi satu kalimat dengan koma
+               setError(data.message.join(", "));
+            } else if (typeof data.message === "string") {
+               setError(data.message);
+            } else {
+               setError("Terjadi kesalahan saat login.");
+            }
          }
-
-         router.push("/login");
       } catch (error) {
          setError(error.message);
       } finally {
