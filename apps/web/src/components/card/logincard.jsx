@@ -47,7 +47,10 @@ export default function LoginCard() {
 
          if (res.ok) {
             // --- SKENARIO 200 (SUCCESS) ---
-            // Sesuai screenshot: key-nya adalah "access_token"
+
+            // Simpan di cookie dengan durasi 7 hari
+            document.cookie = `token=${data.access_token}; path=/; max-age=${60 * 60 * 24 * 7}`;
+            // Simpan localstorage
             localStorage.setItem("token", data.access_token);
 
             const user = JSON.stringify(data.user)
