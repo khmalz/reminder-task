@@ -19,7 +19,7 @@ import { TaskService } from './task.service';
    }),
 )
 export class TaskController {
-   constructor(private readonly taskService: TaskService) {}
+   constructor(private readonly taskService: TaskService) { }
 
    @Post()
    @CreateTaskSwagger()

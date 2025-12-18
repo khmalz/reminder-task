@@ -5,7 +5,7 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 
 @Injectable()
 export class TaskService {
-   constructor(private readonly prisma: PrismaService) {}
+   constructor(private readonly prisma: PrismaService) { }
 
    async create(dto: CreateTaskDto, userId: string) {
       const { categoryIds, ...rest } = dto;
