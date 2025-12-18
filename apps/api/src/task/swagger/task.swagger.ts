@@ -269,3 +269,47 @@ export function DeleteTaskSwagger() {
       }),
    );
 }
+
+export function ToggleCompletedSwagger() {
+   return applyDecorators(
+      ApiBearerAuth('bearer'),
+      ApiOperation({ summary: 'Toggle task completion status' }),
+      ApiParam({
+         name: 'id',
+         description: 'Task ID',
+         example: 'cmhylu9em0007t2xoz82fx2ms',
+      }),
+      ApiResponse({
+         status: 200,
+         description: 'Task completion status toggled successfully',
+         schema: {
+            example: {
+               id: 'cmhylu9em0007t2xoz82fx2ms',
+               isCompleted: true,
+               message: 'Tugas ditandai selesai',
+            },
+         },
+      }),
+      ApiResponse({
+         status: 404,
+         description: 'Task not found',
+         schema: {
+            example: {
+               statusCode: 404,
+               message: 'Tugas tidak ditemukan.',
+               error: 'Not Found',
+            },
+         },
+      }),
+      ApiResponse({
+         status: 401,
+         description: 'Unauthorized - Invalid or missing token',
+         schema: {
+            example: {
+               statusCode: 401,
+               message: 'Unauthorized',
+            },
+         },
+      }),
+   );
+}

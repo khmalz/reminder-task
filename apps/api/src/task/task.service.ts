@@ -207,6 +207,25 @@ export class TaskService {
       };
    }
 
+   async toggleCompleted(taskId: string, userId: string) {
+      const task = await this.prisma.task.findFirst({ where: { id: taskId, userId } });
+
+      if (!task) {
+         throw new NotFoundException('Tugas tidak ditemukan.');
+      }
+
+      const updatedTask = await this.prisma.task.update({
+         where: { id: taskId },
+         data: { isCompleted: !task.isCompleted },
+      });
+
+      return {
+         id: updatedTask.id,
+         isCompleted: updatedTask.isCompleted,
+         message: updatedTask.isCompleted ? 'Tugas ditandai selesai' : 'Tugas ditandai belum selesai',
+      };
+   }
+
    async remove(taskId: string, userId: string) {
       const task = await this.prisma.task.findFirst({ where: { id: taskId, userId } });
 

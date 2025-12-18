@@ -3,6 +3,7 @@
 import { EyeOff, Eye } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function LoginCard() {
    const DUMMY_DATA = {
@@ -127,9 +128,9 @@ export default function LoginCard() {
             <p className="font-light">
                Belum Punya Akun?{" "}
                <span>
-                  <a className="text-primary font-semibold hover:underline" href="/signin">
+                  <Link className="text-primary font-semibold hover:underline" href="/register">
                      Sign In
-                  </a>
+                  </Link>
                </span>
             </p>
          </div>
