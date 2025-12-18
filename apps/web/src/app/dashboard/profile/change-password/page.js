@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useState } from "react";
 
 export default function ProfilePage() {
@@ -7,6 +7,8 @@ export default function ProfilePage() {
       newpassword: "",
       confirmnewpassword: "",
    });
+   const [isLoading, setIsLoading] = useState(false);
+   const [error, setError] = useState("");
 
    const handleChange = e => {
       const { name, value } = e.target;
@@ -25,11 +27,47 @@ export default function ProfilePage() {
       });
    };
 
-   const handleSave = e => {
+   const handleSave = async e => {
       e.preventDefault();
       if (passwords.newpassword !== passwords.confirmnewpassword) {
          alert("Password baru dan konfirmasi ga cocok ");
          return;
+      }
+
+      try {
+         const token = localStorage.getItem("token");
+         const res = await fetch("http://localhost:3000/profile/password", {
+            method: "PATCH",
+            headers: {
+               "Content-Type": "application/json",
+               Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+               oldPassword: passwords.oldpassword,
+               newPassword: passwords.newpassword,
+            }),
+         });
+         const data = await res.json();
+
+         if (res.ok) {
+            // Satuin Object userInfo
+            setPasswords({
+               oldpassword: "",
+               newpassword: "",
+               confirmnewpassword: "",
+            });
+            alert("Password berhasil diperbarui!");
+         } else {
+            const errorMsg = Array.isArray(data.message) ? data.message.join(", ") : data.message;
+            setError(errorMsg || "Gagal memperbarui password.");
+            throw new Error(errorMsg);
+         }
+      } catch (error) {
+         alert(`Tidak dapat mengubah password`);
+         setError("Tidak dapat terhubung ke server. Periksa koneksi Anda.");
+         console.error("Update error:", error);
+      } finally {
+         setIsLoading(false);
       }
    };
 
@@ -64,7 +102,9 @@ export default function ProfilePage() {
             </div>
 
             <div className="flex justify-end gap-3">
-               <button disabled={!hasChanges} onClick={handleCancel} className="bg-primary flex w-fit cursor-pointer justify-end rounded-xl px-4 py-2">Batal</button>
+               <button disabled={!hasChanges} onClick={handleCancel} className="bg-primary flex w-fit cursor-pointer justify-end rounded-xl px-4 py-2">
+                  Batal
+               </button>
                <button onClick={handleSave} className="bg-primary flex w-fit cursor-pointer justify-end rounded-xl px-4 py-2">
                   Simpan Kata Sandi
                </button>

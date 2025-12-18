@@ -2,6 +2,18 @@ import React from "react";
 import { Calendar } from "lucide-react";
 
 const DetailTaskDialog = ({ task, onEdit, onComplete }) => {
+   const categories = task.categoryToTasks.reduce(
+      (acc, item) => {
+         const { title, typeName } = item.category;
+
+         if (typeName === "TASK_KIND") acc.kind = title;
+         if (typeName === "TASK_TYPE") acc.type = title;
+         if (typeName === "TASK_COLLECTION") acc.method = title;
+
+         return acc; 
+      },
+      { kind: "-", type: "-", method: "-" },
+   );
    return (
       <div className="text-center">
          <h2 className="mb-1 text-2xl font-bold">{task.title}</h2>
@@ -10,10 +22,9 @@ const DetailTaskDialog = ({ task, onEdit, onComplete }) => {
          </p>
 
          <div className="mb-8 space-y-3 text-left">
-            <DetailRow label="Mata Kuliah" value={task.subject} />
-            <DetailRow label="Jenis Tugas" value={task.type} />
-            <DetailRow label="Pengumpulan" value={task.method} />
-            <DetailRow label="Status" value={task.status.replace("_", " ")} />
+            <DetailRow label="Jenis Tugas" value={categories.kind} />
+            <DetailRow label="Pengumpulan" value={categories.method} />
+            <DetailRow label="Tipe" value={categories.type} />
          </div>
 
          <div className="flex flex-col gap-3">

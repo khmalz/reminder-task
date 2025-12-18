@@ -49,7 +49,9 @@ export default function LoginCard() {
             // --- SKENARIO 200 (SUCCESS) ---
             // Sesuai screenshot: key-nya adalah "access_token"
             localStorage.setItem("token", data.access_token);
-            localStorage.setItem("userInfo", data.user)
+
+            const user = JSON.stringify(data.user)
+            localStorage.setItem("userInfo", user)
 
             console.log("Login sukses, token disimpan:", data.access_token);
             console.log("Login sukses, info user disimpan:", data.user);
