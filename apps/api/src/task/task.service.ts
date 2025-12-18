@@ -5,7 +5,7 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 
 @Injectable()
 export class TaskService {
-   constructor(private readonly prisma: PrismaService) {}
+   constructor(private readonly prisma: PrismaService) { }
 
    async create(dto: CreateTaskDto, userId: string) {
       const { categoryIds, ...rest } = dto;
@@ -204,6 +204,25 @@ export class TaskService {
                typeName: ct.category.type.name,
             },
          })),
+      };
+   }
+
+   async toggleCompleted(taskId: string, userId: string) {
+      const task = await this.prisma.task.findFirst({ where: { id: taskId, userId } });
+
+      if (!task) {
+         throw new NotFoundException('Tugas tidak ditemukan.');
+      }
+
+      const updatedTask = await this.prisma.task.update({
+         where: { id: taskId },
+         data: { isCompleted: !task.isCompleted },
+      });
+
+      return {
+         id: updatedTask.id,
+         isCompleted: updatedTask.isCompleted,
+         message: updatedTask.isCompleted ? 'Tugas ditandai selesai' : 'Tugas ditandai belum selesai',
       };
    }
 

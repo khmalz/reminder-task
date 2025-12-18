@@ -1,7 +1,7 @@
 import React from "react";
 import { Calendar } from "lucide-react";
 
-const DetailTaskDialog = ({ task, onEdit, onComplete }) => {
+const DetailTaskDialog = ({ task, onEdit, onToggle }) => {
    const categories = task.categoryToTasks.reduce(
       (acc, item) => {
          const { title, typeName } = item.category;
@@ -10,7 +10,7 @@ const DetailTaskDialog = ({ task, onEdit, onComplete }) => {
          if (typeName === "TASK_TYPE") acc.type = title;
          if (typeName === "TASK_COLLECTION") acc.method = title;
 
-         return acc; 
+         return acc;
       },
       { kind: "-", type: "-", method: "-" },
    );
@@ -31,11 +31,9 @@ const DetailTaskDialog = ({ task, onEdit, onComplete }) => {
             <button onClick={onEdit} className="rounded-lg bg-slate-700 py-3 font-semibold shadow-lg transition hover:bg-slate-600">
                Edit Tugas
             </button>
-            {task.status !== "selesai" && (
-               <button onClick={onComplete} className="rounded-lg bg-slate-600 py-3 font-semibold shadow-lg transition hover:bg-slate-500">
-                  Tandai Sebagai Selesai
-               </button>
-            )}
+            <button onClick={onToggle} className="rounded-lg bg-slate-600 py-3 font-semibold shadow-lg transition hover:bg-slate-500">
+               {task.isCompleted ? "Tandai Belum Selesai" : "Tandai Selesai"}
+            </button>
          </div>
       </div>
    );

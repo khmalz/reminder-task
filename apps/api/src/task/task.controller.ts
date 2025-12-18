@@ -5,7 +5,7 @@ import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { TaskIdParamDto } from './dto/task-id-param.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
-import { CreateTaskSwagger, DeleteTaskSwagger, FindAllTasksSwagger, FindOneTaskSwagger, UpdateTaskSwagger } from './swagger/task.swagger';
+import { CreateTaskSwagger, DeleteTaskSwagger, FindAllTasksSwagger, FindOneTaskSwagger, ToggleCompletedSwagger, UpdateTaskSwagger } from './swagger/task.swagger';
 import { TaskService } from './task.service';
 
 @ApiTags('Tasks')
@@ -19,7 +19,7 @@ import { TaskService } from './task.service';
    }),
 )
 export class TaskController {
-   constructor(private readonly taskService: TaskService) {}
+   constructor(private readonly taskService: TaskService) { }
 
    @Post()
    @CreateTaskSwagger()
@@ -43,6 +43,12 @@ export class TaskController {
    @UpdateTaskSwagger()
    update(@Param() params: TaskIdParamDto, @Body() updateTaskDto: UpdateTaskDto, @GetUser('userid') userId: string) {
       return this.taskService.update(params.id, userId, updateTaskDto);
+   }
+
+   @Patch(':id/toggle-completed')
+   @ToggleCompletedSwagger()
+   toggleCompleted(@Param() params: TaskIdParamDto, @GetUser('userid') userId: string) {
+      return this.taskService.toggleCompleted(params.id, userId);
    }
 
    @Delete(':id')

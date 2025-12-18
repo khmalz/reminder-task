@@ -16,7 +16,7 @@ export default function DashboardPage() {
    const [modalState, setModalState] = useState({ mode: "CLOSED", activeTask: null, defaultStatus: "belum_selesai" });
    const [isLoading, setIsLoading] = useState(true);
 
-   
+
 
    const fetchTasks = async () => {
       setIsLoading(true);
@@ -123,28 +123,22 @@ export default function DashboardPage() {
       }
    };
 
-   const handleMarkComplete = async updatedTask => {
+   const handleToggleComplete = async taskId => {
       try {
          const token = localStorage.getItem("token");
-         const res = await fetch("http://localhost:3000/tasks/" + updatedTask.id, {
+         const res = await fetch(`http://localhost:3000/tasks/${taskId}/toggle-completed`, {
             method: "PATCH",
             headers: {
-               "Content-Type": "application/json",
                Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({
-               title: updatedTask.title,
-               isCompleted: true,
-               categoryIds: updatedTask.categoryIds || [],
-            }),
          });
 
          if (res.ok) {
-            fetchTasks(); // Refresh data setelah berhasil tambah
+            fetchTasks(); // Refresh data setelah toggle
             closeModal();
          }
       } catch (err) {
-         alert("Gagal mengedit tugas.");
+         alert("Gagal mengubah status tugas.");
       }
    };
 
@@ -154,7 +148,6 @@ export default function DashboardPage() {
    const closeModal = () => setModalState({ mode: "CLOSED", activeTask: null });
 
    // --- FILTERING ---
-   
    const todoTasks = tasks.filter(t => {
       return !t.isCompleted;
    });
@@ -186,7 +179,7 @@ export default function DashboardPage() {
          {/* Modal Manager Logic */}
          {modalState.mode !== "CLOSED" && (
             <ModalOverlay onClose={closeModal}>
-               {modalState.mode === "DETAIL" && <DetailTaskDialog task={modalState.activeTask} onEdit={() => setModalState({ ...modalState, mode: "EDIT" })} onComplete={() => handleMarkComplete(modalState.activeTask)} />}
+               {modalState.mode === "DETAIL" && <DetailTaskDialog task={modalState.activeTask} onEdit={() => setModalState({ ...modalState, mode: "EDIT" })} onToggle={() => handleToggleComplete(modalState.activeTask.id)} />}
 
                {(modalState.mode === "ADD" || modalState.mode === "EDIT") && (
                   <FormTaskDialog
