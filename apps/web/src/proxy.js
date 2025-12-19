@@ -7,7 +7,7 @@ export function proxy(request) {
    // Ambil path dari URL yang mau dituju
    const { pathname } = request.nextUrl;
 
-   const authPaths = ["/login", "/signin"];
+   const authPaths = ["/login", "/register"];
    const publicPaths = [...authPaths, "/"];
 
    // logic middleware
@@ -22,7 +22,12 @@ export function proxy(request) {
        * Jika tidak, dipersilahkan lewat
        */
 
-      // TODO
+      if (authPaths.includes(pathname)) {
+         return NextResponse.redirect(new URL("/dashboard", request.url))
+      } else {
+         return NextResponse.next()
+      }
+
 
    } else {
       // Ga punya token
@@ -34,6 +39,11 @@ export function proxy(request) {
        */
 
       // TODO
+      if (publicPaths.includes(pathname)){
+         return NextResponse.next()
+      } else {
+         return NextResponse.redirect(new URL("/login", request.url))
+      }
    }
 }
 
