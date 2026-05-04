@@ -14,6 +14,7 @@ async function bootstrap() {
 - **Authentication**: JWT-based authentication with username/password
 - **Tasks**: CRUD operations for tasks with Many-to-Many category relations
 - **Categories**: Custom categories with types (TASK_KIND, TASK_TYPE, TASK_COLLECTION)
+- **Pomodoro**: Pomodoro session logs (general or task-based)
 
 ## Authentication
 Most endpoints require Bearer token authentication. Use the /auth/login endpoint to get your access token.`,
@@ -35,6 +36,7 @@ Most endpoints require Bearer token authentication. Use the /auth/login endpoint
       .addTag('Tasks', 'Task management endpoints')
       .addTag('Categories', 'Category management endpoints')
       .addTag('Profile', 'User profile management endpoints')
+      .addTag('Pomodoro', 'Pomodoro log endpoints')
       .build();
 
    const document = SwaggerModule.createDocument(app, config);

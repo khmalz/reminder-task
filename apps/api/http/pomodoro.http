@@ -1,0 +1,40 @@
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiJjbW9xejBjdWUwMDAwY3o5NWt5YXpmMXk2IiwidXNlcm5hbWUiOiJ1c2VyIiwiaWF0IjoxNzc3ODg2NTg4LCJleHAiOjE3Nzc5NzI5ODh9.D9qLWapcRJ1NxbllkN6uk1m7U3q_CNzbVSUHUZ3KWQs
+@hostname = http://localhost:3000
+@taskId = cmhylu9em0007t2xoz82fx2ms
+
+### Buat log pomodoro (umum)
+POST {{hostname}}/pomodoro
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+    "durationMinutes": 25,
+    "startedAt": "2026-05-04T08:30:00.000Z",
+    "endedAt": "2026-05-04T08:55:00.000Z"
+}
+
+###
+
+### Buat log pomodoro (terkait task)
+POST {{hostname}}/pomodoro
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+    "durationMinutes": 50,
+    "startedAt": "2026-05-04T09:00:00.000Z",
+    "endedAt": "2026-05-04T09:50:00.000Z",
+    "taskId": "{{taskId}}"
+}
+
+###
+
+### Ambil semua log pomodoro
+GET {{hostname}}/pomodoro
+Authorization: Bearer {{authToken}}
+
+###
+
+### Ambil log pomodoro berdasarkan task
+GET {{hostname}}/pomodoro?taskId={{taskId}}
+Authorization: Bearer {{authToken}}

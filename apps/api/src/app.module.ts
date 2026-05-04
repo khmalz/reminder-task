@@ -8,6 +8,7 @@ import { PrismaService } from './prisma/prisma.service';
 import { CategoryModule } from './category/category.module';
 import { TaskModule } from './task/task.module';
 import { ProfileModule } from './profile/profile.module';
+import { PomodoroModule } from './pomodoro/pomodoro.module';
 
 @Module({
    imports: [
@@ -19,6 +20,7 @@ import { ProfileModule } from './profile/profile.module';
       CategoryModule,
       TaskModule,
       ProfileModule,
+      PomodoroModule,
    ],
    controllers: [AppController],
    providers: [AppService, PrismaService],
