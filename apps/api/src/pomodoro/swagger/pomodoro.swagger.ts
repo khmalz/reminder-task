@@ -5,7 +5,10 @@ import { CreatePomodoroLogDto } from '../dto/create-pomodoro-log.dto';
 export function CreatePomodoroLogSwagger() {
    return applyDecorators(
       ApiBearerAuth('bearer'),
-      ApiOperation({ summary: 'Create a new pomodoro log' }),
+      ApiOperation({
+         summary: 'Start a new pomodoro session',
+         description: 'Starts a pomodoro session. Can be started as a general session (without a task) or associated with a specific task by providing an optional `taskId` in the request body.',
+      }),
       ApiBody({ type: CreatePomodoroLogDto }),
       ApiResponse({
          status: 201,
@@ -65,7 +68,10 @@ export function CreatePomodoroLogSwagger() {
 export function FindAllPomodoroLogsSwagger() {
    return applyDecorators(
       ApiBearerAuth('bearer'),
-      ApiOperation({ summary: 'Get all pomodoro logs for the authenticated user' }),
+      ApiOperation({
+         summary: 'Get all pomodoro logs for the authenticated user',
+         description: 'Retrieves the complete pomodoro session history for the authenticated user, optionally filtered by `taskId`.',
+      }),
       ApiQuery({
          name: 'taskId',
          required: false,
