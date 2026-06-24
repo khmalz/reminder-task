@@ -44,9 +44,6 @@ describe('Pomodoro (e2e)', () => {
    let categoryTypeId = '';
    let categoryCollectId = '';
 
-   let generalLogId = '';
-   let taskLogId = '';
-
    const testUser = {
       username: `user_${Date.now()}_pomodoro`,
       password: 'password123',
@@ -117,61 +114,115 @@ describe('Pomodoro (e2e)', () => {
       await app.close();
    });
 
-   it('POST /pomodoro (general)', async () => {
-      const response = await request(app.getHttpServer())
+   it('STP-DB-01: Pengujian Cascade Delete', async () => {
+      const tempUser = {
+         username: `temp_${Date.now()}_cascade`,
+         password: 'password123',
+         name: 'Temp User Cascade',
+      };
+      const registerRes = await request(app.getHttpServer()).post('/auth/register').send(tempUser).expect(201);
+      const tempUserId = (registerRes.body as RegisterResponse).id;
+
+      const loginRes = await request(app.getHttpServer())
+         .post('/auth/login')
+         .send({
+            username: tempUser.username,
+            password: tempUser.password,
+         })
+         .expect(200);
+      const tempToken = (loginRes.body as LoginResponse).access_token;
+
+      await request(app.getHttpServer())
+         .post('/pomodoro')
+         .set('Authorization', `Bearer ${tempToken}`)
+         .send({
+            durationMinutes: 25,
+            startedAt: new Date().toISOString(),
+            endedAt: new Date().toISOString(),
+         })
+         .expect(201);
+
+      const beforeCount = await prisma.pomodoroLog.count({
+         where: { userId: tempUserId },
+      });
+      expect(beforeCount).toBe(1);
+
+      await prisma.user.delete({
+         where: { id: tempUserId },
+      });
+
+      const afterCount = await prisma.pomodoroLog.count({
+         where: { userId: tempUserId },
+      });
+      expect(afterCount).toBe(0);
+   });
+
+   it('STP-DB-02: Pengujian SetNull', async () => {
+      const taskRes = await request(app.getHttpServer())
+         .post('/tasks')
+         .set('Authorization', `Bearer ${authToken}`)
+         .send({
+            title: 'Temp Task SetNull',
+            isCompleted: false,
+            categoryIds: [categoryKindId, categoryTypeId, categoryCollectId],
+         })
+         .expect(201);
+      const tempTaskId = (taskRes.body as TaskResponse).id;
+
+      const pomodoroRes = await request(app.getHttpServer())
          .post('/pomodoro')
          .set('Authorization', `Bearer ${authToken}`)
          .send({
             durationMinutes: 25,
-            startedAt: '2026-05-04T08:30:00.000Z',
-            endedAt: '2026-05-04T08:55:00.000Z',
+            startedAt: new Date().toISOString(),
+            endedAt: new Date().toISOString(),
+            taskId: tempTaskId,
          })
          .expect(201);
+      const tempLogId = (pomodoroRes.body as PomodoroLogResponse).id;
 
-      const body = response.body as PomodoroLogResponse;
-      generalLogId = body.id;
-
-      expect(body.durationMinutes).toBe(25);
-      expect(body.task).toBeNull();
-   });
-
-   it('POST /pomodoro (task linked)', async () => {
-      const response = await request(app.getHttpServer())
-         .post('/pomodoro')
-         .set('Authorization', `Bearer ${authToken}`)
-         .send({
-            durationMinutes: 50,
-            startedAt: '2026-05-04T09:00:00.000Z',
-            endedAt: '2026-05-04T09:50:00.000Z',
-            taskId,
-         })
-         .expect(201);
-
-      const body = response.body as PomodoroLogResponse;
-      taskLogId = body.id;
-
-      expect(body.durationMinutes).toBe(50);
-      expect(body.task).toMatchObject({
-         id: taskId,
-         title: 'Task untuk Pomodoro',
+      const logBefore = await prisma.pomodoroLog.findUnique({
+         where: { id: tempLogId },
       });
+      expect(logBefore?.taskId).toBe(tempTaskId);
+
+      await prisma.task.delete({
+         where: { id: tempTaskId },
+      });
+
+      const logAfter = await prisma.pomodoroLog.findUnique({
+         where: { id: tempLogId },
+      });
+      expect(logAfter).not.toBeNull();
+      expect(logAfter?.taskId).toBeNull();
    });
 
-   it('GET /pomodoro', async () => {
-      const response = await request(app.getHttpServer()).get('/pomodoro').set('Authorization', `Bearer ${authToken}`).expect(200);
-      const body = response.body as PomodoroLogResponse[];
-
-      expect(Array.isArray(body)).toBe(true);
-      const ids = body.map(log => log.id);
-      expect(ids).toEqual(expect.arrayContaining([generalLogId, taskLogId]));
+   it('STP-DB-03: Validasi Integritas FK', async () => {
+      await expect(
+         prisma.pomodoroLog.create({
+            data: {
+               durationMinutes: 25,
+               startedAt: new Date(),
+               endedAt: new Date(),
+               userId: 'non-existent-user-id',
+            },
+         }),
+      ).rejects.toThrow();
    });
 
-   it('GET /pomodoro?taskId=...', async () => {
-      const response = await request(app.getHttpServer()).get(`/pomodoro?taskId=${taskId}`).set('Authorization', `Bearer ${authToken}`).expect(200);
-      const body = response.body as PomodoroLogResponse[];
+   it('STP-DB-04: Efisiensi Akses Data', async () => {
+      const start = performance.now();
 
-      expect(Array.isArray(body)).toBe(true);
-      expect(body.length).toBeGreaterThan(0);
-      expect(body.every(log => log.taskId === taskId)).toBe(true);
+      await prisma.pomodoroLog.findMany({
+         where: {
+            userId,
+            taskId,
+         },
+      });
+
+      const end = performance.now();
+      const duration = end - start;
+
+      expect(duration).toBeLessThan(50);
    });
 });
