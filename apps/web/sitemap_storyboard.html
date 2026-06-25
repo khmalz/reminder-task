@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TASK.IO - Sitemap Klasik</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Belanosima&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --color-bg-home: #f1f5f9;
+            --color-border-home: #cbd5e1;
+            
+            --color-cat-header: #3fc3ee; /* Biru muda level 1 */
+            --color-auth-card: #20325a;  /* Biru tua */
+            --color-dash-card: #93ad38;  /* Hijau zaitun */
+            --color-label-card: #6923b0; /* Ungu */
+            --color-profile-card: #cf4d37; /* Merah bata / coral */
+            
+            --color-dashed-orange: #df931d; /* Orange untuk dialog/modal */
+            --color-dashed-teal: #0b7572;   /* Teal untuk kolom kanban */
+            
+            --text-light: #ffffff;
+            --text-dark: #1e293b;
+            --line-color: #475569;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: var(--text-dark);
+            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
+            padding: 2rem;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        /* Controls & Header */
+        header {
+            max-width: 1400px;
+            margin: 0 auto 2rem auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 1rem;
+        }
+
+        .brand h1 {
+            font-family: 'Belanosima', sans-serif;
+            font-size: 2rem;
+            color: var(--color-auth-card);
+            letter-spacing: 0.5px;
+        }
+
+        .brand span {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn-screenshot {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Outfit', sans-serif;
+            box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+            transition: all 0.2s;
+        }
+
+        .btn-screenshot:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        /* Floating Exit Button */
+        .btn-exit-screenshot {
+            display: none;
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 9999;
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(239, 68, 68, 0.2);
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Sitemap Tree Layout */
+        .sitemap-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3.5rem;
+            position: relative;
+            margin: 0 auto;
+            width: 1400px;
+            padding-bottom: 4rem;
+        }
+
+        /* Home Node */
+        .home-node-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .home-icon-box {
+            width: 40px;
+            height: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        .home-icon-box svg {
+            width: 32px;
+            height: 32px;
+            fill: #94a3b8;
+        }
+
+        .card {
+            border-radius: 4px;
+            padding: 10px 14px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.12);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 42px;
+            z-index: 10;
+            position: relative;
+            background: #ffffff;
+            border: 1px solid transparent;
+        }
+
+        .home-card {
+            background: var(--color-bg-home);
+            border: 1px solid var(--color-border-home);
+            color: var(--text-dark);
+            min-width: 160px;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Columns Grid */
+        .columns-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            gap: 2rem;
+            z-index: 10;
+        }
+
+        .column {
+            width: 23%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Level 1 Category Header Cards */
+        .level1-card {
+            background: var(--color-cat-header);
+            color: var(--text-light);
+            width: 100%;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2.5rem;
+            border-radius: 3px;
+        }
+
+        /* Sub Cards Stacks */
+        .sub-stack-left {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            padding-left: 35px; /* Shift to the right for the vertical branch line */
+        }
+
+        .sub-stack-center {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.75rem;
+        }
+
+        /* Color classes */
+        .bg-auth { background: var(--color-auth-card); color: var(--text-light); }
+        .bg-dash { background: var(--color-dash-card); color: var(--text-light); }
+        .bg-label { background: var(--color-label-card); color: var(--text-light); }
+        .bg-profile { background: var(--color-profile-card); color: var(--text-light); }
+        
+        /* Dashed Branch Cards */
+        .card-dashed {
+            border-radius: 4px;
+            font-weight: 500;
+            font-size: 12px;
+            min-height: 38px;
+            box-shadow: none;
+        }
+
+        .dashed-orange {
+            border: 2.5px dashed var(--color-dashed-orange);
+            background: #fffdf5;
+            color: var(--color-dashed-orange);
+        }
+
+        .dashed-teal {
+            border: 2.5px dashed var(--color-dashed-teal);
+            background: #f0fdfa;
+            color: var(--color-dashed-teal);
+        }
+
+        /* Horizontal Layouts for branches */
+        .row-with-branch {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            gap: 3rem;
+            position: relative;
+        }
+
+        .branch-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            width: 170px;
+        }
+
+        .main-item-with-branch {
+            flex: 1;
+        }
+
+        /* SVG Line Canvas Overlay */
+        #sitemap-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Screenshot mode adjustments */
+        body.screenshot-mode {
+            padding: 3rem;
+        }
+
+        body.screenshot-mode header {
+            display: none;
+        }
+
+        body.screenshot-mode .btn-exit-screenshot {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Floating Exit Button for Screenshot Mode -->
+    <button class="btn-exit-screenshot" onclick="toggleScreenshotMode()">
+        ← Keluar Mode Gambar
+    </button>
+
+    <header id="control-header">
+        <div class="brand">
+            <h1>TASK.IO</h1>
+            <span>Peta Situs Alur Aplikasi (Sitemap Diagram)</span>
+        </div>
+        <div class="controls">
+            <button class="btn-screenshot" onclick="toggleScreenshotMode()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                Mode Screenshot
+            </button>
+        </div>
+    </header>
+
+    <main class="sitemap-container">
+        <!-- SVG lines container -->
+        <svg id="sitemap-svg"></svg>
+
+        <!-- TOP LEVEL: HOMEPAGE -->
+        <div class="home-node-wrapper">
+            <div class="home-icon-box">
+                <svg viewBox="0 0 24 24">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                </svg>
+            </div>
+            <div id="node-home" class="card home-card">Homepage</div>
+        </div>
+
+        <!-- COLUMNS LEVEL -->
+        <div class="columns-container">
+            
+            <!-- COLUMN 1: AUTENTIKASI -->
+            <div class="column">
+                <div id="node-auth-cat" class="card level1-card">Account Management</div>
+                
+                <div class="sub-stack-left">
+                    <div id="node-register" class="card bg-auth">Sign Up (/register)</div>
+                    <div id="node-login" class="card bg-auth">Login (/login)</div>
+                </div>
+            </div>
+
+            <!-- COLUMN 2: DASBOR TUGAS (SEQUENTIAL FLOW) -->
+            <div class="column" style="width: 32%;">
+                <div id="node-dash-cat" class="card level1-card">Task Workspace</div>
+                
+                <div class="sub-stack-center">
+                    <div id="node-dash-main" class="card bg-dash" style="width: 170px;">Workspace (/dashboard)</div>
+                    <div id="node-dash-widget" class="card bg-dash" style="width: 170px;">Counter Stats & Calendar</div>
+                    
+                    <!-- Kanban Row with nested Column branch -->
+                    <div class="row-with-branch">
+                        <div id="node-dash-kanban" class="card bg-dash main-item-with-branch" style="width: 170px;">Papan Kanban</div>
+                        <div class="branch-stack">
+                            <div id="node-kanban-todo" class="card card-dashed dashed-teal">Kolom Belum Selesai</div>
+                            <div id="node-kanban-done" class="card card-dashed dashed-teal">Kolom Selesai</div>
+                        </div>
+                    </div>
+
+                    <!-- Actions Row with nested Actions branch -->
+                    <div class="row-with-branch">
+                        <div id="node-dash-actions" class="card bg-dash main-item-with-branch" style="width: 170px;">Aksi Tugas</div>
+                        <div class="branch-stack" style="gap: 0.5rem;">
+                            <div id="node-action-detail" class="card card-dashed dashed-orange">DetailTaskDialog</div>
+                            <div id="node-action-form" class="card card-dashed dashed-orange">FormTaskDialog</div>
+                            <div id="node-action-delete" class="card card-dashed dashed-orange">Hapus Tugas</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COLUMN 3: KUSTOM LABEL -->
+            <div class="column" style="width: 22%;">
+                <div id="node-label-cat" class="card level1-card">Label Customization</div>
+                
+                <div class="sub-stack-left">
+                    <div class="row-with-branch">
+                        <div id="node-label-main" class="card bg-label main-item-with-branch">Kelola Label (/labels)</div>
+                        <div class="branch-stack" style="width: 140px;">
+                            <div id="node-label-dialog" class="card card-dashed dashed-orange">CategoryDialog</div>
+                        </div>
+                    </div>
+                    <div id="node-label-kind" class="card bg-label">Jenis (TASK_KIND)</div>
+                    <div id="node-label-type" class="card bg-label">Tipe (TASK_TYPE)</div>
+                    <div id="node-label-coll" class="card bg-label">Pengumpulan (TASK_COLLECTION)</div>
+                </div>
+            </div>
+
+            <!-- COLUMN 4: PROFIL PENGGUNA -->
+            <div class="column" style="width: 22%;">
+                <div id="node-profile-cat" class="card level1-card">Profile Setting</div>
+                
+                <div class="sub-stack-left">
+                    <div class="row-with-branch">
+                        <div id="node-profile-main" class="card bg-profile main-item-with-branch">Informasi Profil (/profile)</div>
+                        <div class="branch-stack" style="width: 140px;">
+                            <div id="node-profile-dialog" class="card card-dashed dashed-orange">EditProfileDialog</div>
+                        </div>
+                    </div>
+                    <div id="node-profile-pass" class="card bg-profile">Ubah Password</div>
+                    <div id="node-profile-logout" class="card bg-profile">Sesi Keluar (Logout)</div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Line Drawing Engine -->
+    <script>
+        const svg = document.getElementById('sitemap-svg');
+
+        function getCoords(el) {
+            const container = document.querySelector('.sitemap-container');
+            const containerRect = container.getBoundingClientRect();
+            const rect = el.getBoundingClientRect();
+            
+            return {
+                left: rect.left - containerRect.left,
+                right: rect.right - containerRect.left,
+                top: rect.top - containerRect.top,
+                bottom: rect.bottom - containerRect.top,
+                width: rect.width,
+                height: rect.height,
+                cx: (rect.left + rect.right) / 2 - containerRect.left,
+                cy: (rect.top + rect.bottom) / 2 - containerRect.top
+            };
+        }
+
+        function drawPath(d, isDashed = false, hasArrow = false) {
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', d);
+            path.setAttribute('stroke', '#475569');
+            path.setAttribute('stroke-width', '2');
+            path.setAttribute('fill', 'none');
+            
+            if (isDashed) {
+                path.setAttribute('stroke-dasharray', '5,4');
+            }
+            if (hasArrow) {
+                path.setAttribute('marker-end', 'url(#arrow)');
+            }
+            svg.appendChild(path);
+        }
+
+        function drawAllLines() {
+            // Clear previous lines, preserve marker definition
+            svg.innerHTML = `
+                <defs>
+                    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                        <path d="M 0 1.5 L 7 5 L 0 8.5 z" fill="#475569" />
+                    </marker>
+                </defs>
+            `;
+
+            // 1. TOP HEADER TREE (Homepage to 4 Level 1 Categories)
+            const home = getCoords(document.getElementById('node-home'));
+            const c1 = getCoords(document.getElementById('node-auth-cat'));
+            const c2 = getCoords(document.getElementById('node-dash-cat'));
+            const c3 = getCoords(document.getElementById('node-label-cat'));
+            const c4 = getCoords(document.getElementById('node-profile-cat'));
+
+            const midY = (home.bottom + c1.top) / 2;
+
+            // Main vertical trunk down from Home
+            drawPath(`M ${home.cx} ${home.bottom} L ${home.cx} ${midY}`);
+            // Horizontal bar spanning columns
+            drawPath(`M ${c1.cx} ${midY} L ${c4.cx} ${midY}`);
+            // Vertical drops to Level 1 cards
+            drawPath(`M ${c1.cx} ${midY} L ${c1.cx} ${c1.top}`);
+            drawPath(`M ${c2.cx} ${midY} L ${c2.cx} ${c2.top}`);
+            drawPath(`M ${c3.cx} ${midY} L ${c3.cx} ${c3.top}`);
+            drawPath(`M ${c4.cx} ${midY} L ${c4.cx} ${c4.top}`);
+
+            // 2. COLUMN 1: AUTENTIKASI (Left-aligned stacked tree)
+            const reg = getCoords(document.getElementById('node-register'));
+            const login = getCoords(document.getElementById('node-login'));
+            
+            // Vertical spine
+            drawPath(`M ${c1.cx} ${c1.bottom} L ${c1.cx} ${login.cy}`);
+            // Horizontal connections into cards
+            drawPath(`M ${c1.cx} ${reg.cy} L ${reg.left} ${reg.cy}`, false, true);
+            drawPath(`M ${c1.cx} ${login.cy} L ${login.left} ${login.cy}`, false, true);
+
+            // 3. COLUMN 2: DASBOR TUGAS (Sequential center flow + branches)
+            const dMain = getCoords(document.getElementById('node-dash-main'));
+            const dWidget = getCoords(document.getElementById('node-dash-widget'));
+            const dKanban = getCoords(document.getElementById('node-dash-kanban'));
+            const dActions = getCoords(document.getElementById('node-dash-actions'));
+
+            // Vertical center arrows
+            drawPath(`M ${c2.cx} ${c2.bottom} L ${dMain.cx} ${dMain.top}`, false, true);
+            drawPath(`M ${dMain.cx} ${dMain.bottom} L ${dWidget.cx} ${dWidget.top}`, false, true);
+            drawPath(`M ${dWidget.cx} ${dWidget.bottom} L ${dKanban.cx} ${dKanban.top}`, false, true);
+            drawPath(`M ${dKanban.cx} ${dKanban.bottom} L ${dActions.cx} ${dActions.top}`, false, true);
+
+            // Kanban Branch Stack (Todo & Done)
+            const kTodo = getCoords(document.getElementById('node-kanban-todo'));
+            const kDone = getCoords(document.getElementById('node-kanban-done'));
+            const kMidX = (dKanban.right + kTodo.left) / 2;
+
+            drawPath(`M ${dKanban.right} ${dKanban.cy} L ${kMidX} ${dKanban.cy}`, true);
+            drawPath(`M ${kMidX} ${kTodo.cy} L ${kMidX} ${kDone.cy}`, true);
+            drawPath(`M ${kMidX} ${kTodo.cy} L ${kTodo.left} ${kTodo.cy}`, true, true);
+            drawPath(`M ${kMidX} ${kDone.cy} L ${kDone.left} ${kDone.cy}`, true, true);
+
+            // Actions Branch Stack (Detail, Form & Delete)
+            const aDetail = getCoords(document.getElementById('node-action-detail'));
+            const aForm = getCoords(document.getElementById('node-action-form'));
+            const aDelete = getCoords(document.getElementById('node-action-delete'));
+            const aMidX = (dActions.right + aDetail.left) / 2;
+
+            drawPath(`M ${dActions.right} ${dActions.cy} L ${aMidX} ${dActions.cy}`, true);
+            drawPath(`M ${aMidX} ${aDetail.cy} L ${aMidX} ${aDelete.cy}`, true);
+            drawPath(`M ${aMidX} ${aDetail.cy} L ${aDetail.left} ${aDetail.cy}`, true, true);
+            drawPath(`M ${aMidX} ${aForm.cy} L ${aForm.left} ${aForm.cy}`, true, true);
+            drawPath(`M ${aMidX} ${aDelete.cy} L ${aDelete.left} ${aDelete.cy}`, true, true);
+
+            // 4. COLUMN 3: KUSTOM LABEL (Left-aligned stacked + branch)
+            const lMain = getCoords(document.getElementById('node-label-main'));
+            const lKind = getCoords(document.getElementById('node-label-kind'));
+            const lType = getCoords(document.getElementById('node-label-type'));
+            const lColl = getCoords(document.getElementById('node-label-coll'));
+            
+            // Vertical spine
+            drawPath(`M ${c3.cx} ${c3.bottom} L ${c3.cx} ${lColl.cy}`);
+            // Horizontal connections
+            drawPath(`M ${c3.cx} ${lMain.cy} L ${lMain.left} ${lMain.cy}`, false, true);
+            drawPath(`M ${c3.cx} ${lKind.cy} L ${lKind.left} ${lKind.cy}`, false, true);
+            drawPath(`M ${c3.cx} ${lType.cy} L ${lType.left} ${lType.cy}`, false, true);
+            drawPath(`M ${c3.cx} ${lColl.cy} L ${lColl.left} ${lColl.cy}`, false, true);
+
+            // CategoryDialog branch
+            const lDialog = getCoords(document.getElementById('node-label-dialog'));
+            drawPath(`M ${lMain.right} ${lMain.cy} L ${lDialog.left} ${lDialog.cy}`, true, true);
+
+            // 5. COLUMN 4: PROFIL PENGGUNA (Left-aligned stacked + branch)
+            const pMain = getCoords(document.getElementById('node-profile-main'));
+            const pPass = getCoords(document.getElementById('node-profile-pass'));
+            const pLog = getCoords(document.getElementById('node-profile-logout'));
+
+            // Vertical spine
+            drawPath(`M ${c4.cx} ${c4.bottom} L ${c4.cx} ${pLog.cy}`);
+            // Horizontal connections
+            drawPath(`M ${c4.cx} ${pMain.cy} L ${pMain.left} ${pMain.cy}`, false, true);
+            drawPath(`M ${c4.cx} ${pPass.cy} L ${pPass.left} ${pPass.cy}`, false, true);
+            drawPath(`M ${c4.cx} ${pLog.cy} L ${pLog.left} ${pLog.cy}`, false, true);
+
+            // EditProfileDialog branch
+            const pDialog = getCoords(document.getElementById('node-profile-dialog'));
+            drawPath(`M ${pMain.right} ${pMain.cy} L ${pDialog.left} ${pDialog.cy}`, true, true);
+        }
+
+        // Toggle Screenshot Mode
+        function toggleScreenshotMode() {
+            document.body.classList.toggle('screenshot-mode');
+            // Redraw lines to recalculate coordinates since layout may shift slightly
+            setTimeout(drawAllLines, 50);
+        }
+
+        // Initialize and bind events
+        window.addEventListener('load', () => {
+            // Short timeout to ensure custom fonts are rendered and positions are stable
+            setTimeout(drawAllLines, 150);
+        });
+        window.addEventListener('resize', drawAllLines);
+    </script>
+</body>
+</html>
