@@ -29,6 +29,7 @@
    id              String           @id @default(cuid())
    title           String
    isCompleted     Boolean          @default(false)
+   dueDateAt       DateTime?
    user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
    userId          String
    categoryToTasks CategoryToTask[]

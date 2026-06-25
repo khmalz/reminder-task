@@ -29,6 +29,7 @@ type TaskResponse = {
    id: string;
    title: string;
    isCompleted: boolean;
+   dueDateAt: string;
    categoryToTasks: TaskCategory[];
 };
 
@@ -124,6 +125,7 @@ describe('Task (e2e)', () => {
          .send({
             title: 'Selesaikan makalah',
             isCompleted: false,
+            dueDateAt: '2026-06-25T14:11:30.000Z',
             categoryIds: [categoryKindId, categoryTypeId, categoryCollectId],
          })
          .expect(201);
@@ -133,8 +135,34 @@ describe('Task (e2e)', () => {
 
       expect(body.title).toBe('Selesaikan makalah');
       expect(body.isCompleted).toBe(false);
+      expect(body.dueDateAt).toBe('2026-06-25T14:11:30.000Z');
       expect(body.categoryToTasks).toHaveLength(3);
       expect(body.categoryToTasks[0]?.category).toHaveProperty('typeName');
+   });
+
+   it('POST /tasks - Fail when dueDateAt is missing', async () => {
+      await request(app.getHttpServer())
+         .post('/tasks')
+         .set('Authorization', `Bearer ${authToken}`)
+         .send({
+            title: 'Selesaikan makalah tanpa deadline',
+            isCompleted: false,
+            categoryIds: [categoryKindId, categoryTypeId, categoryCollectId],
+         })
+         .expect(400);
+   });
+
+   it('POST /tasks - Fail when dueDateAt is invalid', async () => {
+      await request(app.getHttpServer())
+         .post('/tasks')
+         .set('Authorization', `Bearer ${authToken}`)
+         .send({
+            title: 'Selesaikan makalah',
+            isCompleted: false,
+            dueDateAt: 'hari-ini',
+            categoryIds: [categoryKindId, categoryTypeId, categoryCollectId],
+         })
+         .expect(400);
    });
 
    it('GET /tasks', async () => {
@@ -160,6 +188,7 @@ describe('Task (e2e)', () => {
          .send({
             title: 'Task routes v2 (DI-UPDATE)',
             isCompleted: true,
+            dueDateAt: '2026-06-30T10:00:00.000Z',
             categoryIds: [categoryKindId, categoryUpdateId, categoryCollectId],
          })
          .expect(200);
@@ -168,6 +197,7 @@ describe('Task (e2e)', () => {
 
       expect(body.title).toBe('Task routes v2 (DI-UPDATE)');
       expect(body.isCompleted).toBe(true);
+      expect(body.dueDateAt).toBe('2026-06-30T10:00:00.000Z');
       expect(body.categoryToTasks).toHaveLength(3);
    });
 

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ArrayNotEmpty, IsArray, IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { ArrayNotEmpty, IsArray, IsBoolean, IsDateString, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { IsCuid } from 'src/common/validators/is-custom-cuid.constraint';
 
 export class CreateTaskDto {
@@ -20,6 +20,15 @@ export class CreateTaskDto {
    @IsBoolean()
    @IsOptional()
    isCompleted?: boolean;
+
+   @ApiProperty({
+      description: 'Due date of the task',
+      example: '2026-06-25T14:11:30.000Z',
+      required: true,
+   })
+   @IsDateString()
+   @IsNotEmpty()
+   dueDateAt: string;
 
    @ApiProperty({
       description: 'Array of category IDs to associate with this task',

@@ -98,6 +98,7 @@ describe('Pomodoro (e2e)', () => {
          .send({
             title: 'Task untuk Pomodoro',
             isCompleted: false,
+            dueDateAt: '2026-06-25T14:11:30.000Z',
             categoryIds: [categoryKindId, categoryTypeId, categoryCollectId],
          })
          .expect(201);
@@ -164,6 +165,7 @@ describe('Pomodoro (e2e)', () => {
          .send({
             title: 'Temp Task SetNull',
             isCompleted: false,
+            dueDateAt: '2026-06-25T14:11:30.000Z',
             categoryIds: [categoryKindId, categoryTypeId, categoryCollectId],
          })
          .expect(201);
