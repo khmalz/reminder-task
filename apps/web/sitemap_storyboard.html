@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TASK.IO - Sitemap Klasik</title>
+    <title>TASK.IO - Peta Situs Klasik (Bahasa Indonesia)</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,13 +15,17 @@
             --color-border-home: #cbd5e1;
             
             --color-cat-header: #3fc3ee; /* Biru muda level 1 */
-            --color-auth-card: #20325a;  /* Biru tua */
-            --color-dash-card: #93ad38;  /* Hijau zaitun */
-            --color-label-card: #6923b0; /* Ungu */
-            --color-profile-card: #cf4d37; /* Merah bata / coral */
             
-            --color-dashed-orange: #df931d; /* Orange untuk dialog/modal */
-            --color-dashed-teal: #0b7572;   /* Teal untuk kolom kanban */
+            /* Skema warna 6 kolom sesuai referensi gambar */
+            --color-auth-card: #20325a;    /* Kolom 1: Biru Tua (Manajemen Akun) */
+            --color-dash-card: #93ad38;    /* Kolom 2: Hijau Zaitun (Ringkasan Dasbor) */
+            --color-tasks-card: #7d8995;   /* Kolom 3: Abu-abu Muted (Daftar Tugas) */
+            --color-label-card: #6923b0;   /* Kolom 4: Ungu (Daftar Kategori) */
+            --color-pomo-card: #cf4d37;    /* Kolom 5: Coral/Merah Bata (Fokus Pomodoro) */
+            --color-profile-card: #3a1752; /* Kolom 6: Deep Purple (Pengaturan Profil) */
+            
+            --color-dashed-orange: #df931d; /* Oranye untuk Modal/Dialog */
+            --color-dashed-teal: #0b7572;   /* Teal untuk Kolom/Widget Khusus */
             
             --text-light: #ffffff;
             --text-dark: #1e293b;
@@ -41,12 +45,14 @@
             min-height: 100vh;
             padding: 2rem;
             position: relative;
+            /* Mengunci lebar minimum agar saat di-screenshot resolusinya tetap proporsional dan tidak terhimpit */
+            min-width: 1800px;
             overflow-x: auto;
         }
 
-        /* Controls & Header */
+        /* Header Kontrol */
         header {
-            max-width: 1400px;
+            max-width: 1750px;
             margin: 0 auto 2rem auto;
             display: flex;
             justify-content: space-between;
@@ -94,7 +100,7 @@
             transform: translateY(-1px);
         }
 
-        /* Floating Exit Button */
+        /* Tombol Keluar dari Mode Screenshot */
         .btn-exit-screenshot {
             display: none;
             position: fixed;
@@ -112,7 +118,7 @@
             font-family: 'Outfit', sans-serif;
         }
 
-        /* Sitemap Tree Layout */
+        /* Kontainer Utama Sitemap */
         .sitemap-container {
             display: flex;
             flex-direction: column;
@@ -120,11 +126,11 @@
             gap: 3.5rem;
             position: relative;
             margin: 0 auto;
-            width: 1400px;
+            width: 1750px;
             padding-bottom: 4rem;
         }
 
-        /* Home Node */
+        /* Node Beranda (Root) */
         .home-node-wrapper {
             display: flex;
             flex-direction: column;
@@ -149,7 +155,7 @@
 
         .card {
             border-radius: 4px;
-            padding: 10px 14px;
+            padding: 10px 12px;
             text-align: center;
             font-size: 13px;
             font-weight: 600;
@@ -168,52 +174,53 @@
             background: var(--color-bg-home);
             border: 1px solid var(--color-border-home);
             color: var(--text-dark);
-            min-width: 160px;
+            min-width: 180px;
             font-weight: 700;
             text-transform: uppercase;
             font-size: 12px;
             letter-spacing: 0.5px;
         }
 
-        /* Columns Grid */
+        /* Kontainer Kolom */
         .columns-container {
             display: flex;
             justify-content: space-between;
             width: 100%;
-            gap: 2rem;
+            gap: 1.25rem;
             z-index: 10;
         }
 
         .column {
-            width: 23%;
+            width: 15.5%;
             display: flex;
             flex-direction: column;
             align-items: center;
             position: relative;
         }
 
-        /* Level 1 Category Header Cards */
+        /* Judul Kategori Level 1 */
         .level1-card {
             background: var(--color-cat-header);
             color: var(--text-light);
             width: 100%;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin-bottom: 2.5rem;
             border-radius: 3px;
         }
 
-        /* Sub Cards Stacks */
+        /* Gaya Tumpukan Sub-Card (Rata Kiri dengan Spasi Garis Vertikal) */
         .sub-stack-left {
             width: 100%;
             display: flex;
             flex-direction: column;
             gap: 1.25rem;
-            padding-left: 35px; /* Shift to the right for the vertical branch line */
+            padding-left: 30px; /* Memberikan ruang untuk garis vertikal di sebelah kiri */
         }
 
+        /* Gaya Tumpukan Sub-Card Berurutan (Rata Tengah) */
         .sub-stack-center {
             width: 100%;
             display: flex;
@@ -222,13 +229,15 @@
             gap: 1.75rem;
         }
 
-        /* Color classes */
+        /* Warna Latar Belakang Kartu berdasarkan Kolom */
         .bg-auth { background: var(--color-auth-card); color: var(--text-light); }
         .bg-dash { background: var(--color-dash-card); color: var(--text-light); }
+        .bg-tasks { background: var(--color-tasks-card); color: var(--text-light); }
         .bg-label { background: var(--color-label-card); color: var(--text-light); }
+        .bg-pomo { background: var(--color-pomo-card); color: var(--text-light); }
         .bg-profile { background: var(--color-profile-card); color: var(--text-light); }
         
-        /* Dashed Branch Cards */
+        /* Kartu dengan Batas Putus-Putus (Dashed) */
         .card-dashed {
             border-radius: 4px;
             font-weight: 500;
@@ -249,28 +258,28 @@
             color: var(--color-dashed-teal);
         }
 
-        /* Horizontal Layouts for branches */
+        /* Tata Letak Cabang Horisontal */
         .row-with-branch {
             display: flex;
             align-items: center;
             justify-content: space-between;
             width: 100%;
-            gap: 3rem;
+            gap: 2rem;
             position: relative;
         }
 
         .branch-stack {
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
-            width: 170px;
+            gap: 0.5rem;
+            width: 130px;
         }
 
         .main-item-with-branch {
             flex: 1;
         }
 
-        /* SVG Line Canvas Overlay */
+        /* Kanvas Garis SVG */
         #sitemap-svg {
             position: absolute;
             top: 0;
@@ -281,7 +290,7 @@
             z-index: 1;
         }
 
-        /* Screenshot mode adjustments */
+        /* Penyesuaian Mode Screenshot */
         body.screenshot-mode {
             padding: 3rem;
         }
@@ -297,7 +306,7 @@
 </head>
 <body>
 
-    <!-- Floating Exit Button for Screenshot Mode -->
+    <!-- Tombol Melayang Keluar dari Mode Screenshot -->
     <button class="btn-exit-screenshot" onclick="toggleScreenshotMode()">
         ← Keluar Mode Gambar
     </button>
@@ -305,7 +314,7 @@
     <header id="control-header">
         <div class="brand">
             <h1>TASK.IO</h1>
-            <span>Peta Situs Alur Aplikasi (Sitemap Diagram)</span>
+            <span>Dokumentasi Arsitektur Rute & Sitemap Halaman (Bahasa Indonesia)</span>
         </div>
         <div class="controls">
             <button class="btn-screenshot" onclick="toggleScreenshotMode()">
@@ -316,70 +325,74 @@
     </header>
 
     <main class="sitemap-container">
-        <!-- SVG lines container -->
+        <!-- Kanvas Garis SVG -->
         <svg id="sitemap-svg"></svg>
 
-        <!-- TOP LEVEL: HOMEPAGE -->
+        <!-- HOMEPAGE (ROOT NODE) -->
         <div class="home-node-wrapper">
             <div class="home-icon-box">
                 <svg viewBox="0 0 24 24">
                     <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
                 </svg>
             </div>
-            <div id="node-home" class="card home-card">Homepage</div>
+            <div id="node-home" class="card home-card">Halaman Utama</div>
         </div>
 
-        <!-- COLUMNS LEVEL -->
+        <!-- 6 MAIN COLUMNS CONTAINER -->
         <div class="columns-container">
             
-            <!-- COLUMN 1: AUTENTIKASI -->
+            <!-- KOLOM 1: MANAJEMEN AKUN (PUBLIC AUTH) -->
             <div class="column">
-                <div id="node-auth-cat" class="card level1-card">Account Management</div>
+                <div id="node-auth-cat" class="card level1-card">Manajemen Akun</div>
                 
                 <div class="sub-stack-left">
-                    <div id="node-register" class="card bg-auth">Sign Up (/register)</div>
-                    <div id="node-login" class="card bg-auth">Login (/login)</div>
+                    <div id="node-register" class="card bg-auth">Pendaftaran Akun (/register)</div>
+                    <div id="node-login" class="card bg-auth">Masuk Sesi (/login)</div>
                 </div>
             </div>
 
-            <!-- COLUMN 2: DASBOR TUGAS (SEQUENTIAL FLOW) -->
-            <div class="column" style="width: 32%;">
-                <div id="node-dash-cat" class="card level1-card">Task Workspace</div>
+            <!-- KOLOM 2: RINGKASAN DASBOR (PROTECTED DASHBOARD) -->
+            <div class="column">
+                <div id="node-dash-cat" class="card level1-card">Ringkasan Dasbor</div>
                 
                 <div class="sub-stack-center">
-                    <div id="node-dash-main" class="card bg-dash" style="width: 170px;">Workspace (/dashboard)</div>
-                    <div id="node-dash-widget" class="card bg-dash" style="width: 170px;">Counter Stats & Calendar</div>
-                    
-                    <!-- Kanban Row with nested Column branch -->
-                    <div class="row-with-branch">
-                        <div id="node-dash-kanban" class="card bg-dash main-item-with-branch" style="width: 170px;">Papan Kanban</div>
-                        <div class="branch-stack">
-                            <div id="node-kanban-todo" class="card card-dashed dashed-teal">Kolom Belum Selesai</div>
-                            <div id="node-kanban-done" class="card card-dashed dashed-teal">Kolom Selesai</div>
-                        </div>
-                    </div>
+                    <div id="node-dash-main" class="card bg-dash" style="width: 100%;">Tampilan Utama (/dashboard)</div>
+                    <div id="node-dash-widget" class="card bg-dash" style="width: 100%;">Widget Informasi & Kalender</div>
+                    <div id="node-dash-table" class="card bg-dash" style="width: 100%;">Tabel Ringkasan Tugas</div>
+                    <div id="node-dash-stats" class="card bg-dash" style="width: 100%;">Statistik Dasbor Dinamis</div>
+                </div>
+            </div>
 
-                    <!-- Actions Row with nested Actions branch -->
-                    <div class="row-with-branch">
-                        <div id="node-dash-actions" class="card bg-dash main-item-with-branch" style="width: 170px;">Aksi Tugas</div>
-                        <div class="branch-stack" style="gap: 0.5rem;">
-                            <div id="node-action-detail" class="card card-dashed dashed-orange">DetailTaskDialog</div>
-                            <div id="node-action-form" class="card card-dashed dashed-orange">FormTaskDialog</div>
+            <!-- KOLOM 3: DAFTAR TUGAS (PROTECTED TASKS) -->
+            <div class="column" style="width: 21%;">
+                <div id="node-tasks-cat" class="card level1-card">Daftar Tugas</div>
+                
+                <div class="sub-stack-center">
+                    <div id="node-tasks-main" class="card bg-tasks" style="width: 160px;">Halaman Tugas (/dashboard/tasks)</div>
+                    <div id="node-tasks-filter" class="card bg-tasks" style="width: 160px;">Pencarian & Penyaringan</div>
+                    <div id="node-tasks-table" class="card bg-tasks" style="width: 160px;">Tabel Daftar Tugas</div>
+                    
+                    <!-- Dropdown Aksi Row dengan nested Actions branch -->
+                    <div class="row-with-branch" style="width: 100%;">
+                        <div id="node-tasks-dropdown" class="card bg-tasks main-item-with-branch" style="width: 160px;">Dropdown Aksi</div>
+                        <div class="branch-stack">
+                            <div id="node-action-detail" class="card card-dashed dashed-orange">Dialog Detail Tugas</div>
+                            <div id="node-action-form" class="card card-dashed dashed-orange">Dialog Form Tugas</div>
                             <div id="node-action-delete" class="card card-dashed dashed-orange">Hapus Tugas</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- COLUMN 3: KUSTOM LABEL -->
-            <div class="column" style="width: 22%;">
-                <div id="node-label-cat" class="card level1-card">Label Customization</div>
+            <!-- KOLOM 4: DAFTAR KATEGORI (PROTECTED CATEGORIES) -->
+            <div class="column" style="width: 19%;">
+                <div id="node-label-cat" class="card level1-card">Daftar Kategori</div>
                 
                 <div class="sub-stack-left">
                     <div class="row-with-branch">
-                        <div id="node-label-main" class="card bg-label main-item-with-branch">Kelola Label (/labels)</div>
-                        <div class="branch-stack" style="width: 140px;">
-                            <div id="node-label-dialog" class="card card-dashed dashed-orange">CategoryDialog</div>
+                        <div id="node-label-main" class="card bg-label main-item-with-branch">Kelola Kategori (/categories)</div>
+                        <div class="branch-stack" style="width: 120px;">
+                            <div id="node-label-dialog" class="card card-dashed dashed-orange">Dialog Form Kategori</div>
                         </div>
                     </div>
                     <div id="node-label-kind" class="card bg-label">Jenis (TASK_KIND)</div>
@@ -388,18 +401,35 @@
                 </div>
             </div>
 
-            <!-- COLUMN 4: PROFIL PENGGUNA -->
-            <div class="column" style="width: 22%;">
-                <div id="node-profile-cat" class="card level1-card">Profile Setting</div>
+            <!-- KOLOM 5: FOKUS POMODORO (PROTECTED POMODORO) -->
+            <div class="column" style="width: 19%;">
+                <div id="node-pomo-cat" class="card level1-card">Fokus Pomodoro</div>
+                
+                <div class="sub-stack-left">
+                    <div class="row-with-branch">
+                        <div id="node-pomo-main" class="card bg-pomo main-item-with-branch">Halaman Pomodoro (/pomodoro)</div>
+                        <div class="branch-stack" style="width: 120px;">
+                            <div id="node-pomo-dialog" class="card card-dashed dashed-orange">Dialog Atur Pomodoro</div>
+                        </div>
+                    </div>
+                    <div id="node-pomo-timer" class="card bg-pomo">Timer Sesi (Fokus/Break)</div>
+                    <div id="node-pomo-link" class="card bg-pomo">Hubungkan Tugas</div>
+                    <div id="node-pomo-history" class="card bg-pomo">Tabel Riwayat Sesi</div>
+                </div>
+            </div>
+
+            <!-- KOLOM 6: PENGATURAN PROFIL (PROTECTED PROFILE) -->
+            <div class="column" style="width: 19%;">
+                <div id="node-profile-cat" class="card level1-card">Pengaturan Profil</div>
                 
                 <div class="sub-stack-left">
                     <div class="row-with-branch">
                         <div id="node-profile-main" class="card bg-profile main-item-with-branch">Informasi Profil (/profile)</div>
-                        <div class="branch-stack" style="width: 140px;">
-                            <div id="node-profile-dialog" class="card card-dashed dashed-orange">EditProfileDialog</div>
+                        <div class="branch-stack" style="width: 120px;">
+                            <div id="node-profile-dialog" class="card card-dashed dashed-orange">Dialog Edit Profil</div>
                         </div>
                     </div>
-                    <div id="node-profile-pass" class="card bg-profile">Ubah Password</div>
+                    <div id="node-profile-pass" class="card bg-profile">Ubah Kata Sandi</div>
                     <div id="node-profile-logout" class="card bg-profile">Sesi Keluar (Logout)</div>
                 </div>
             </div>
@@ -445,7 +475,7 @@
         }
 
         function drawAllLines() {
-            // Clear previous lines, preserve marker definition
+            // Bersihkan garis sebelumnya, sisakan definisi marker panah
             svg.innerHTML = `
                 <defs>
                     <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
@@ -454,114 +484,137 @@
                 </defs>
             `;
 
-            // 1. TOP HEADER TREE (Homepage to 4 Level 1 Categories)
+            // 1. POHON UTAMA (Homepage menghubungkan ke 6 Kategori Level 1)
             const home = getCoords(document.getElementById('node-home'));
             const c1 = getCoords(document.getElementById('node-auth-cat'));
             const c2 = getCoords(document.getElementById('node-dash-cat'));
-            const c3 = getCoords(document.getElementById('node-label-cat'));
-            const c4 = getCoords(document.getElementById('node-profile-cat'));
+            const c3 = getCoords(document.getElementById('node-tasks-cat'));
+            const c4 = getCoords(document.getElementById('node-label-cat'));
+            const c5 = getCoords(document.getElementById('node-pomo-cat'));
+            const c6 = getCoords(document.getElementById('node-profile-cat'));
 
             const midY = (home.bottom + c1.top) / 2;
 
-            // Main vertical trunk down from Home
+            // Batang vertikal utama dari Home
             drawPath(`M ${home.cx} ${home.bottom} L ${home.cx} ${midY}`);
-            // Horizontal bar spanning columns
-            drawPath(`M ${c1.cx} ${midY} L ${c4.cx} ${midY}`);
-            // Vertical drops to Level 1 cards
+            // Batang horisontal melintang
+            drawPath(`M ${c1.cx} ${midY} L ${c6.cx} ${midY}`);
+            // Penurunan vertikal ke masing-masing Kategori Level 1
             drawPath(`M ${c1.cx} ${midY} L ${c1.cx} ${c1.top}`);
             drawPath(`M ${c2.cx} ${midY} L ${c2.cx} ${c2.top}`);
             drawPath(`M ${c3.cx} ${midY} L ${c3.cx} ${c3.top}`);
             drawPath(`M ${c4.cx} ${midY} L ${c4.cx} ${c4.top}`);
+            drawPath(`M ${c5.cx} ${midY} L ${c5.cx} ${c5.top}`);
+            drawPath(`M ${c6.cx} ${midY} L ${c6.cx} ${c6.top}`);
 
-            // 2. COLUMN 1: AUTENTIKASI (Left-aligned stacked tree)
+            // 2. KOLOM 1: MANAJEMEN AKUN (Pohon rata kiri vertikal)
             const reg = getCoords(document.getElementById('node-register'));
             const login = getCoords(document.getElementById('node-login'));
             
-            // Vertical spine
+            // Tulang belakang vertikal
             drawPath(`M ${c1.cx} ${c1.bottom} L ${c1.cx} ${login.cy}`);
-            // Horizontal connections into cards
+            // Hubungan horisontal ke sub-card
             drawPath(`M ${c1.cx} ${reg.cy} L ${reg.left} ${reg.cy}`, false, true);
             drawPath(`M ${c1.cx} ${login.cy} L ${login.left} ${login.cy}`, false, true);
 
-            // 3. COLUMN 2: DASBOR TUGAS (Sequential center flow + branches)
+            // 3. KOLOM 2: RINGKASAN DASBOR (Alur berurutan rata tengah)
             const dMain = getCoords(document.getElementById('node-dash-main'));
             const dWidget = getCoords(document.getElementById('node-dash-widget'));
-            const dKanban = getCoords(document.getElementById('node-dash-kanban'));
-            const dActions = getCoords(document.getElementById('node-dash-actions'));
+            const dTable = getCoords(document.getElementById('node-dash-table'));
+            const dStats = getCoords(document.getElementById('node-dash-stats'));
 
-            // Vertical center arrows
+            // Panah vertikal berurutan
             drawPath(`M ${c2.cx} ${c2.bottom} L ${dMain.cx} ${dMain.top}`, false, true);
             drawPath(`M ${dMain.cx} ${dMain.bottom} L ${dWidget.cx} ${dWidget.top}`, false, true);
-            drawPath(`M ${dWidget.cx} ${dWidget.bottom} L ${dKanban.cx} ${dKanban.top}`, false, true);
-            drawPath(`M ${dKanban.cx} ${dKanban.bottom} L ${dActions.cx} ${dActions.top}`, false, true);
+            drawPath(`M ${dWidget.cx} ${dWidget.bottom} L ${dTable.cx} ${dTable.top}`, false, true);
+            drawPath(`M ${dTable.cx} ${dTable.bottom} L ${dStats.cx} ${dStats.top}`, false, true);
 
-            // Kanban Branch Stack (Todo & Done)
-            const kTodo = getCoords(document.getElementById('node-kanban-todo'));
-            const kDone = getCoords(document.getElementById('node-kanban-done'));
-            const kMidX = (dKanban.right + kTodo.left) / 2;
+            // 4. KOLOM 3: DAFTAR TUGAS (Alur berurutan rata tengah + cabang)
+            const tMain = getCoords(document.getElementById('node-tasks-main'));
+            const tFilter = getCoords(document.getElementById('node-tasks-filter'));
+            const tTable = getCoords(document.getElementById('node-tasks-table'));
+            const tDropdown = getCoords(document.getElementById('node-tasks-dropdown'));
 
-            drawPath(`M ${dKanban.right} ${dKanban.cy} L ${kMidX} ${dKanban.cy}`, true);
-            drawPath(`M ${kMidX} ${kTodo.cy} L ${kMidX} ${kDone.cy}`, true);
-            drawPath(`M ${kMidX} ${kTodo.cy} L ${kTodo.left} ${kTodo.cy}`, true, true);
-            drawPath(`M ${kMidX} ${kDone.cy} L ${kDone.left} ${kDone.cy}`, true, true);
+            // Panah vertikal berurutan
+            drawPath(`M ${c3.cx} ${c3.bottom} L ${tMain.cx} ${tMain.top}`, false, true);
+            drawPath(`M ${tMain.cx} ${tMain.bottom} L ${tFilter.cx} ${tFilter.top}`, false, true);
+            drawPath(`M ${tFilter.cx} ${tFilter.bottom} L ${tTable.cx} ${tTable.top}`, false, true);
+            drawPath(`M ${tTable.cx} ${tTable.bottom} L ${tDropdown.cx} ${tDropdown.top}`, false, true);
 
-            // Actions Branch Stack (Detail, Form & Delete)
+            // Cabang Dialog Aksi (Detail, Form & Hapus) di sebelah kanan
             const aDetail = getCoords(document.getElementById('node-action-detail'));
             const aForm = getCoords(document.getElementById('node-action-form'));
             const aDelete = getCoords(document.getElementById('node-action-delete'));
-            const aMidX = (dActions.right + aDetail.left) / 2;
+            const aMidX = (tDropdown.right + aDetail.left) / 2;
 
-            drawPath(`M ${dActions.right} ${dActions.cy} L ${aMidX} ${dActions.cy}`, true);
+            drawPath(`M ${tDropdown.right} ${tDropdown.cy} L ${aMidX} ${tDropdown.cy}`, true);
             drawPath(`M ${aMidX} ${aDetail.cy} L ${aMidX} ${aDelete.cy}`, true);
             drawPath(`M ${aMidX} ${aDetail.cy} L ${aDetail.left} ${aDetail.cy}`, true, true);
             drawPath(`M ${aMidX} ${aForm.cy} L ${aForm.left} ${aForm.cy}`, true, true);
             drawPath(`M ${aMidX} ${aDelete.cy} L ${aDelete.left} ${aDelete.cy}`, true, true);
 
-            // 4. COLUMN 3: KUSTOM LABEL (Left-aligned stacked + branch)
+            // 5. KOLOM 4: DAFTAR KATEGORI (Pohon rata kiri + cabang)
             const lMain = getCoords(document.getElementById('node-label-main'));
             const lKind = getCoords(document.getElementById('node-label-kind'));
             const lType = getCoords(document.getElementById('node-label-type'));
             const lColl = getCoords(document.getElementById('node-label-coll'));
             
-            // Vertical spine
-            drawPath(`M ${c3.cx} ${c3.bottom} L ${c3.cx} ${lColl.cy}`);
-            // Horizontal connections
-            drawPath(`M ${c3.cx} ${lMain.cy} L ${lMain.left} ${lMain.cy}`, false, true);
-            drawPath(`M ${c3.cx} ${lKind.cy} L ${lKind.left} ${lKind.cy}`, false, true);
-            drawPath(`M ${c3.cx} ${lType.cy} L ${lType.left} ${lType.cy}`, false, true);
-            drawPath(`M ${c3.cx} ${lColl.cy} L ${lColl.left} ${lColl.cy}`, false, true);
+            // Tulang belakang vertikal
+            drawPath(`M ${c4.cx} ${c4.bottom} L ${c4.cx} ${lColl.cy}`);
+            // Hubungan horisontal
+            drawPath(`M ${c4.cx} ${lMain.cy} L ${lMain.left} ${lMain.cy}`, false, true);
+            drawPath(`M ${c4.cx} ${lKind.cy} L ${lKind.left} ${lKind.cy}`, false, true);
+            drawPath(`M ${c4.cx} ${lType.cy} L ${lType.left} ${lType.cy}`, false, true);
+            drawPath(`M ${c4.cx} ${lColl.cy} L ${lColl.left} ${lColl.cy}`, false, true);
 
-            // CategoryDialog branch
+            // Cabang CategoryDialog
             const lDialog = getCoords(document.getElementById('node-label-dialog'));
             drawPath(`M ${lMain.right} ${lMain.cy} L ${lDialog.left} ${lDialog.cy}`, true, true);
 
-            // 5. COLUMN 4: PROFIL PENGGUNA (Left-aligned stacked + branch)
-            const pMain = getCoords(document.getElementById('node-profile-main'));
+            // 6. KOLOM 5: FOKUS POMODORO (Pohon rata kiri + cabang)
+            const pMain = getCoords(document.getElementById('node-pomo-main'));
+            const pTimer = getCoords(document.getElementById('node-pomo-timer'));
+            const pLink = getCoords(document.getElementById('node-pomo-link'));
+            const pHistory = getCoords(document.getElementById('node-pomo-history'));
+            
+            // Tulang belakang vertikal
+            drawPath(`M ${c5.cx} ${c5.bottom} L ${c5.cx} ${pHistory.cy}`);
+            // Hubungan horisontal
+            drawPath(`M ${c5.cx} ${pMain.cy} L ${pMain.left} ${pMain.cy}`, false, true);
+            drawPath(`M ${c5.cx} ${pTimer.cy} L ${pTimer.left} ${pTimer.cy}`, false, true);
+            drawPath(`M ${c5.cx} ${pLink.cy} L ${pLink.left} ${pLink.cy}`, false, true);
+            drawPath(`M ${c5.cx} ${pHistory.cy} L ${pHistory.left} ${pHistory.cy}`, false, true);
+
+            // Cabang Dialog Pengaturan
+            const pDialog = getCoords(document.getElementById('node-pomo-dialog'));
+            drawPath(`M ${pMain.right} ${pMain.cy} L ${pDialog.left} ${pDialog.cy}`, true, true);
+
+            // 7. KOLOM 6: PENGATURAN PROFIL (Pohon rata kiri + cabang)
+            const profMain = getCoords(document.getElementById('node-profile-main'));
             const pPass = getCoords(document.getElementById('node-profile-pass'));
             const pLog = getCoords(document.getElementById('node-profile-logout'));
 
-            // Vertical spine
-            drawPath(`M ${c4.cx} ${c4.bottom} L ${c4.cx} ${pLog.cy}`);
-            // Horizontal connections
-            drawPath(`M ${c4.cx} ${pMain.cy} L ${pMain.left} ${pMain.cy}`, false, true);
-            drawPath(`M ${c4.cx} ${pPass.cy} L ${pPass.left} ${pPass.cy}`, false, true);
-            drawPath(`M ${c4.cx} ${pLog.cy} L ${pLog.left} ${pLog.cy}`, false, true);
+            // Tulang belakang vertikal
+            drawPath(`M ${c6.cx} ${c6.bottom} L ${c6.cx} ${pLog.cy}`);
+            // Hubungan horisontal
+            drawPath(`M ${c6.cx} ${profMain.cy} L ${profMain.left} ${profMain.cy}`, false, true);
+            drawPath(`M ${c6.cx} ${pPass.cy} L ${pPass.left} ${pPass.cy}`, false, true);
+            drawPath(`M ${c6.cx} ${pLog.cy} L ${pLog.left} ${pLog.cy}`, false, true);
 
-            // EditProfileDialog branch
-            const pDialog = getCoords(document.getElementById('node-profile-dialog'));
-            drawPath(`M ${pMain.right} ${pMain.cy} L ${pDialog.left} ${pDialog.cy}`, true, true);
+            // Cabang EditProfileDialog
+            const profDialog = getCoords(document.getElementById('node-profile-dialog'));
+            drawPath(`M ${profMain.right} ${profMain.cy} L ${profDialog.left} ${profDialog.cy}`, true, true);
         }
 
-        // Toggle Screenshot Mode
+        // Toggle Mode Screenshot
         function toggleScreenshotMode() {
             document.body.classList.toggle('screenshot-mode');
-            // Redraw lines to recalculate coordinates since layout may shift slightly
+            // Gambar ulang garis setelah jeda singkat untuk memastikan koordinat terhitung dengan tepat
             setTimeout(drawAllLines, 50);
         }
 
-        // Initialize and bind events
+        // Jalankan saat halaman dimuat dan saat ukuran layar diubah
         window.addEventListener('load', () => {
-            // Short timeout to ensure custom fonts are rendered and positions are stable
             setTimeout(drawAllLines, 150);
         });
         window.addEventListener('resize', drawAllLines);

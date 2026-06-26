@@ -427,6 +427,7 @@ Creates a new task.
 *   **Request Body**:
     *   `title` (string, required): The title of the task.
     *   `isCompleted` (boolean, optional, default: `false`): Initial completion status of the task.
+    *   `dueDateAt` (string, required, ISO-8601 format): The due date of the task.
     *   `categoryIds` (array of strings, required): An array of category CUIDs to associate with the task.
 *   **Responses**:
     *   **201 Created**: Task successfully created with its category relations.
@@ -435,6 +436,7 @@ Creates a new task.
            "id": "cmhylu9em0007t2xoz82fx2ms",
            "title": "Selesaikan coding task routes (v2 - Many-to-Many)",
            "isCompleted": false,
+           "dueDateAt": "2025-11-20T17:00:00.000Z",
            "userId": "cmhyb5qrw0000t2g4t88y6zb2",
            "createdAt": "2025-11-14T08:37:23.614Z",
            "updatedAt": "2025-11-14T08:37:23.614Z",
@@ -486,6 +488,7 @@ Retrieves all tasks for the authenticated user.
               "id": "cmhylu9em0007t2xoz82fx2ms",
               "title": "Selesaikan coding task routes (v2 - Many-to-Many)",
               "isCompleted": false,
+              "dueDateAt": "2025-11-20T17:00:00.000Z",
               "userId": "cmhyb5qrw0000t2g4t88y6zb2",
               "createdAt": "2025-11-14T08:37:23.614Z",
               "updatedAt": "2025-11-14T08:37:23.614Z",
@@ -521,6 +524,7 @@ Retrieves a specific task by ID.
            "id": "cmhylu9em0007t2xoz82fx2ms",
            "title": "Selesaikan coding task routes (v2 - Many-to-Many)",
            "isCompleted": false,
+           "dueDateAt": "2025-11-20T17:00:00.000Z",
            "userId": "cmhyb5qrw0000t2g4t88y6zb2",
            "createdAt": "2025-11-14T08:37:23.614Z",
            "updatedAt": "2025-11-14T08:37:23.614Z",
@@ -559,6 +563,7 @@ Updates a task's details.
 *   **Request Body**:
     *   `title` (string, optional): Updated title.
     *   `isCompleted` (boolean, optional): Updated completion status.
+    *   `dueDateAt` (string, optional, ISO-8601 format): Updated due date.
     *   `categoryIds` (array of strings, optional): Updated array of category IDs.
 *   **Responses**:
     *   **200 OK**: Task updated successfully.
@@ -567,6 +572,7 @@ Updates a task's details.
            "id": "cmhylu9em0007t2xoz82fx2ms",
            "title": "Task routes v2 (DI-UPDATE)",
            "isCompleted": true,
+           "dueDateAt": "2025-11-20T17:00:00.000Z",
            "userId": "cmhyb5qrw0000t2g4t88y6zb2",
            "createdAt": "2025-11-14T08:37:23.614Z",
            "updatedAt": "2025-11-14T08:38:04.733Z",
