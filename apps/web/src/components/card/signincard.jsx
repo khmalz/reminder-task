@@ -3,10 +3,9 @@
 import { EyeOff, Eye } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function SigninCard() {
-   // const EXISTING_USERS = [{ username: "giwnk__" }, { username: "admin" }, { username: "superman" }];
-
    const router = useRouter();
    const [formData, setFormData] = useState({
       fullname: "",
@@ -32,12 +31,10 @@ export default function SigninCard() {
       try {
          if (!formData.fullname || !formData.username || !formData.password || !formData.confirmPassword) {
             throw new Error("Formulir Tidak Boleh Kosong");
-            return;
          }
 
          if (formData.password !== formData.confirmPassword) {
             throw new Error("Konfirmasi Password Anda Salah");
-            return;
          }
 
          const dataReq = {
@@ -60,12 +57,11 @@ export default function SigninCard() {
             router.push("/login");
          } else {
             if (Array.isArray(data.message)) {
-               // Gabungkan array menjadi satu kalimat dengan koma
                setError(data.message.join(", "));
             } else if (typeof data.message === "string") {
                setError(data.message);
             } else {
-               setError("Terjadi kesalahan saat login.");
+               setError("Terjadi kesalahan saat pendaftaran.");
             }
          }
       } catch (error) {
@@ -76,13 +72,24 @@ export default function SigninCard() {
    };
 
    return (
-      <div className="bg-secondary flex flex-col items-center justify-center gap-3 rounded-4xl px-10 py-5">
-         <p className="text-primary w-xs text-center text-base">Lengkapi formulir di bawah ini untuk membuat akun barumu.</p>
-         {error && <div className="w-full rounded-lg border-2 border-red-400 bg-red-100 p-2 text-center text-sm text-red-600">{error}</div>}
-         <form action="" onSubmit={handleSubmit} className="flex w-full flex-col gap-2">
-            <div className="w-full space-y-2">
-               <label htmlFor="username" className="text-accent">
-                  Nama
+      <div className="bg-card border border-border/80 flex flex-col items-center justify-center gap-5 rounded-2xl p-8 max-w-sm w-full shadow-xl font-lexend text-primary animate-in zoom-in-95 duration-200">
+         <div className="flex flex-col gap-1 text-center w-full">
+            <h2 className="text-base font-bold text-primary tracking-tight">Daftar Akun</h2>
+            <p className="text-secondary text-xs font-semibold leading-relaxed">
+               Lengkapi formulir di bawah ini untuk membuat akun baru Anda.
+            </p>
+         </div>
+         
+         {error && (
+            <div className="w-full rounded-xl border border-red-200 bg-red-50/50 p-3 text-center text-xs font-semibold text-red-600">
+               {error}
+            </div>
+         )}
+         
+         <form onSubmit={handleSubmit} className="flex w-full flex-col gap-4">
+            <div className="w-full flex flex-col gap-1.5 text-left">
+               <label htmlFor="fullname" className="text-xs font-bold text-secondary uppercase tracking-wider">
+                  Nama Lengkap
                </label>
                <input
                   type="text"
@@ -91,13 +98,13 @@ export default function SigninCard() {
                   disabled={isLoading}
                   onChange={handleChange}
                   value={formData.fullname}
-                  placeholder="Nama Kamu"
-                  className="bg-background text-primary w-full rounded-md px-2.5 py-1.5 outline-none focus:ring"
+                  placeholder="Nama Lengkap Anda..."
+                  className="w-full rounded-xl bg-background border border-border/80 px-3.5 py-2.5 text-xs font-semibold text-primary outline-none focus:border-primary/50 transition-colors"
                />
             </div>
 
-            <div className="w-full space-y-2">
-               <label htmlFor="username" className="text-accent">
+            <div className="w-full flex flex-col gap-1.5 text-left">
+               <label htmlFor="username" className="text-xs font-bold text-secondary uppercase tracking-wider">
                   Username
                </label>
                <input
@@ -107,13 +114,13 @@ export default function SigninCard() {
                   disabled={isLoading}
                   onChange={handleChange}
                   value={formData.username}
-                  placeholder="Username Kamu"
-                  className="bg-background text-primary w-full rounded-md px-2.5 py-1.5 outline-none focus:ring"
+                  placeholder="Username Pilihan..."
+                  className="w-full rounded-xl bg-background border border-border/80 px-3.5 py-2.5 text-xs font-semibold text-primary outline-none focus:border-primary/50 transition-colors"
                />
             </div>
 
-            <div className="w-full space-y-2">
-               <label htmlFor="username" className="text-accent">
+            <div className="w-full flex flex-col gap-1.5 text-left">
+               <label htmlFor="password" className="text-xs font-bold text-secondary uppercase tracking-wider">
                   Password
                </label>
                <div className="relative">
@@ -124,17 +131,21 @@ export default function SigninCard() {
                      id="password"
                      onChange={handleChange}
                      value={formData.password}
-                     placeholder="Password Kamu"
-                     className="bg-background text-primary w-full rounded-md px-2.5 py-1.5 outline-none focus:ring"
+                     placeholder="Password Akun..."
+                     className="w-full rounded-xl bg-background border border-border/80 px-3.5 py-2.5 pr-10 text-xs font-semibold text-primary outline-none focus:border-primary/50 transition-colors"
                   />
-                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="text-primary absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer hover:brightness-150">
-                     {showPassword ? <EyeOff /> : <Eye />}
+                  <button 
+                     type="button" 
+                     onClick={() => setShowPassword(!showPassword)} 
+                     className="text-secondary/60 hover:text-primary absolute top-1/2 right-3.5 -translate-y-1/2 cursor-pointer transition-colors"
+                  >
+                     {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
                </div>
             </div>
 
-            <div className="w-full space-y-2">
-               <label htmlFor="confirmPassword" className="text-accent">
+            <div className="w-full flex flex-col gap-1.5 text-left">
+               <label htmlFor="confirmPassword" className="text-xs font-bold text-secondary uppercase tracking-wider">
                   Konfirmasi Password
                </label>
                <div className="relative">
@@ -142,31 +153,36 @@ export default function SigninCard() {
                      type={showConfirmPassword ? "text" : "password"}
                      name="confirmPassword"
                      disabled={isLoading}
-                     id="password"
+                     id="confirmPassword"
                      onChange={handleChange}
                      value={formData.confirmPassword}
-                     placeholder="Password Kamu"
-                     className="bg-background text-primary w-full rounded-md px-2.5 py-1.5 outline-none focus:ring"
+                     placeholder="Ulangi Password..."
+                     className="w-full rounded-xl bg-background border border-border/80 px-3.5 py-2.5 pr-10 text-xs font-semibold text-primary outline-none focus:border-primary/50 transition-colors"
                   />
-                  <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="text-primary absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer hover:brightness-150">
-                     {showConfirmPassword ? <EyeOff /> : <Eye />}
+                  <button 
+                     type="button" 
+                     onClick={() => setShowConfirmPassword(!showConfirmPassword)} 
+                     className="text-secondary/60 hover:text-primary absolute top-1/2 right-3.5 -translate-y-1/2 cursor-pointer transition-colors"
+                  >
+                     {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
                </div>
             </div>
 
-            <button type="submit" disabled={isLoading} className="bg-primary mt-2 cursor-pointer rounded-lg py-2 hover:brightness-85">
-               <h2 className="text-xl font-semibold">Sign In</h2>
+            <button 
+               type="submit" 
+               disabled={isLoading} 
+               className="w-full py-3 rounded-xl bg-primary text-white text-xs font-bold hover:opacity-90 active:scale-95 transition-all shadow-xs cursor-pointer mt-2 disabled:opacity-50"
+            >
+               {isLoading ? "Memproses..." : "Register"}
             </button>
          </form>
-         <div>
-            <p className="font-light">
-               Sudah Punya Akun?{" "}
-               <span>
-                  <a className="text-primary font-semibold hover:underline" href="/login">
-                     Log In
-                  </a>
-               </span>
-            </p>
+         
+         <div className="mt-2 text-xs font-medium text-secondary">
+            Sudah punya akun?
+            <Link className="text-primary font-bold hover:underline ml-1.5" href="/login">
+               Log In
+            </Link>
          </div>
       </div>
    );

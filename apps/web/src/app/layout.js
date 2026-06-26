@@ -1,4 +1,4 @@
-import { Belanosima, Lexend_Deca } from "next/font/google";
+import { Belanosima, Lexend_Deca, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
 const belanosima = Belanosima({
@@ -12,6 +12,12 @@ const lexendDeca = Lexend_Deca({
    subsets: ["latin"],
    variable: "--font-lexend-deca",
 });
+
+const jakartaSans = Plus_Jakarta_Sans({
+   weight: ["200","300","400","500","600","700","800"],
+   subsets: ["latin"],
+   variable: "--font-jakarta-sans"
+})
 
 export const metadata = {
    title: "Task.IO",

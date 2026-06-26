@@ -1,6 +1,6 @@
 "use client";
-import { Eye } from "lucide-react";
-import { EyeClosed } from "lucide-react";
+
+import { Eye, EyeClosed, KeyRound } from "lucide-react";
 import { useState } from "react";
 
 export default function ProfilePage() {
@@ -36,13 +36,13 @@ export default function ProfilePage() {
          newpassword: "",
          confirmnewpassword: "",
       });
-      setErrors({});
+      setErrors({ oldpassword: "", newpassword: "", confirmnewpassword: "", general: "" });
    };
 
    const handleSave = async e => {
       e.preventDefault();
       setIsLoading(true);
-      setErrors({});
+      setErrors({ oldpassword: "", newpassword: "", confirmnewpassword: "", general: "" });
       if (passwords.newpassword !== passwords.confirmnewpassword) {
          setErrors(prev => ({
             ...prev,
@@ -70,31 +70,25 @@ export default function ProfilePage() {
          if (!res.ok) {
             const newErrors = { oldpassword: "", newpassword: "", confirmnewpassword: "", general: "" };
 
-            // LOGIC HANDLING ERROR DARI BACKEND
             if (data.statusCode === 400 && Array.isArray(data.message)) {
-               // Kasus Validasi (Array of strings)
-               // Contoh: ["oldPassword should not be empty", "Password minimal harus 8 karakter"]
                data.message.forEach(msg => {
                   const lowerMsg = msg.toLowerCase();
                   if (lowerMsg.includes("oldpassword")) {
                      newErrors.oldpassword = msg;
                   } else if (lowerMsg.includes("newpassword") || lowerMsg.includes("password")) {
-                     // Asumsi error validasi password umum masuk ke field newpassword
                      newErrors.newpassword = msg;
                   } else {
                      newErrors.general = msg;
                   }
                });
             } else if (data.statusCode === 401) {
-               // Kasus Password Lama Salah
                newErrors.oldpassword = data.message;
             } else {
-               // Kasus Error Lainnya (404, 500)
                newErrors.general = data.message || "Terjadi kesalahan pada server.";
             }
 
             setErrors(newErrors);
-            return; // Stop eksekusi jika error
+            return;
          }
 
          setPasswords({
@@ -117,22 +111,30 @@ export default function ProfilePage() {
    const hasChanges = passwords.oldpassword || passwords.newpassword || passwords.confirmnewpassword;
 
    return (
-      <div className="bg-muted flex min-h-[450px] w-full flex-col gap-10 rounded-2xl border border-slate-200 px-12 py-8 shadow-sm">
-         <div>
-            <h1 className="text-primary text-2xl font-semibold">Ubah Kata Sandi</h1>
-         </div>
-
-         {errors.general && (
-            <div className="relative rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
-               <span className="block sm:inline">{errors.general}</span>
+      <div className="bg-card border border-border/80 rounded-2xl p-8 shadow-xs flex flex-col justify-between h-[450px] w-full max-w-xl animate-in zoom-in-95 duration-200 text-primary font-lexend">
+         {/* Top Section: Header & Form Fields */}
+         <div className="flex flex-col gap-4 w-full flex-1 justify-center">
+            {/* Header info */}
+            <div className="flex items-center gap-3 pb-3 border-b border-border/20">
+               <span className="p-2.5 rounded-xl bg-background/50 border border-border/60 text-primary">
+                  <KeyRound className="h-5 w-5" />
+               </span>
+               <div className="flex flex-col">
+                  <h1 className="text-lg font-bold tracking-tight text-primary">Ubah Kata Sandi</h1>
+                  <span className="text-xs font-semibold text-secondary mt-0.5">Perbarui kata sandi akun Anda untuk meningkatkan keamanan</span>
+               </div>
             </div>
-         )}
 
-         <form action="" className="flex w-full flex-col gap-5">
-            <div className="w-full space-y-2">
-               <div>
-                  <div className="relative">
-                     <label htmlFor="oldpassword" className="text-primary mb-1 block text-xl font-semibold">
+            {errors.general && (
+               <div className="w-full rounded-xl border border-red-200 bg-red-50/50 p-2 text-center text-xs font-semibold text-red-600">
+                  {errors.general}
+               </div>
+            )}
+
+            <form onSubmit={handleSave} className="flex flex-col justify-between flex-1 w-full gap-4 mt-2">
+               <div className="space-y-3.5">
+                  <div>
+                     <label htmlFor="oldpassword" className="text-[10px] font-bold text-secondary uppercase tracking-wider mb-1 block">
                         Password Lama
                      </label>
                      <div className="relative">
@@ -143,74 +145,82 @@ export default function ProfilePage() {
                            name="oldpassword"
                            id="oldpassword"
                            placeholder="Masukkan Password Lama..."
-                           // Kondisional class: Tambahkan border merah jika ada error
-                           className={`bg-background text-primary w-full rounded-md px-2.5 py-2.5 pr-10 outline-none focus:ring ${errors.oldpassword ? "border-2 border-red-500 focus:ring-red-200" : ""}`}
+                           className={`w-full rounded-xl bg-background border border-border/80 px-3.5 py-2 text-xs font-semibold text-primary outline-none focus:border-primary/50 transition-colors ${errors.oldpassword ? "border-red-500 focus:border-red-500" : ""}`}
                         />
-                        <button type="button" onClick={() => setShowOldPass(!showOldPass)} className="hover:text-primary absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-gray-500 transition-colors">
-                           {showOldPass ? <Eye /> : <EyeClosed />}
+                        <button type="button" onClick={() => setShowOldPass(!showOldPass)} className="hover:text-primary absolute top-1/2 right-3.5 -translate-y-1/2 cursor-pointer text-secondary/60 transition-colors">
+                           {showOldPass ? <Eye size={16} /> : <EyeClosed size={16} />}
                         </button>
                      </div>
+                     {errors.oldpassword && <p className="mt-1 ml-1 text-[10px] font-semibold text-red-500">{errors.oldpassword}</p>}
                   </div>
-                  {/* Teks Error di bawah input */}
-                  {errors.oldpassword && <p className="mt-1 ml-1 text-sm text-red-500">{errors.oldpassword}</p>}
-               </div>
 
-               <div>
-                  <div className="relative">
-                     <label htmlFor="newpassword" className="text-primary mb-1 block text-xl font-semibold">
-                        Password Baru
-                     </label>
-                     <div className="relative">
-                        <input
-                           onChange={handleChange}
-                           value={passwords.newpassword}
-                           type={showNewPass ? "text" : "password"}
-                           name="newpassword"
-                           id="newpassword"
-                           placeholder="Masukkan Password Baru..."
-                           className={`bg-background text-primary w-full rounded-md px-2.5 py-2.5 pr-10 outline-none focus:ring ${errors.newpassword ? "border-2 border-red-500 focus:ring-red-200" : ""}`}
-                        />
-                        <button type="button" onClick={() => setShowNewPass(!showNewPass)} className="hover:text-primary absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-gray-500 transition-colors">
-                           {showNewPass ? <Eye /> : <EyeClosed />}
-                        </button>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                     <div>
+                        <label htmlFor="newpassword" className="text-[10px] font-bold text-secondary uppercase tracking-wider mb-1 block">
+                           Password Baru
+                        </label>
+                        <div className="relative">
+                           <input
+                              onChange={handleChange}
+                              value={passwords.newpassword}
+                              type={showNewPass ? "text" : "password"}
+                              name="newpassword"
+                              id="newpassword"
+                              placeholder="Masukkan Password Baru..."
+                              className={`w-full rounded-xl bg-background border border-border/80 px-3.5 py-2 text-xs font-semibold text-primary outline-none focus:border-primary/50 transition-colors ${errors.newpassword ? "border-red-500 focus:border-red-500" : ""}`}
+                           />
+                           <button type="button" onClick={() => setShowNewPass(!showNewPass)} className="hover:text-primary absolute top-1/2 right-3.5 -translate-y-1/2 cursor-pointer text-secondary/60 transition-colors">
+                              {showNewPass ? <Eye size={16} /> : <EyeClosed size={16} />}
+                           </button>
+                        </div>
+                        {errors.newpassword && <p className="mt-1 ml-1 text-[10px] font-semibold text-red-500">{errors.newpassword}</p>}
+                     </div>
+
+                     <div>
+                        <label htmlFor="confirmnewpassword" className="text-[10px] font-bold text-secondary uppercase tracking-wider mb-1 block">
+                           Konfirmasi Password
+                        </label>
+                        <div className="relative">
+                           <input
+                              onChange={handleChange}
+                              value={passwords.confirmnewpassword}
+                              type={showConfirmPass ? "text" : "password"}
+                              name="confirmnewpassword"
+                              id="confirmnewpassword"
+                              placeholder="Konfirmasi Password Baru..."
+                              className={`w-full rounded-xl bg-background border border-border/80 px-3.5 py-2 text-xs font-semibold text-primary outline-none focus:border-primary/50 transition-colors ${errors.confirmnewpassword ? "border-red-500 focus:border-red-500" : ""}`}
+                           />
+                           <button type="button" onClick={() => setShowConfirmPass(!showConfirmPass)} className="hover:text-primary absolute top-1/2 right-3.5 -translate-y-1/2 cursor-pointer text-secondary/60 transition-colors">
+                              {showConfirmPass ? <Eye size={16} /> : <EyeClosed size={16} />}
+                           </button>
+                        </div>
+                        {errors.confirmnewpassword && <p className="mt-1 ml-1 text-[10px] font-semibold text-red-500">{errors.confirmnewpassword}</p>}
                      </div>
                   </div>
-                  {errors.newpassword && <p className="mt-1 ml-1 text-sm text-red-500">{errors.newpassword}</p>}
                </div>
 
-               <div>
-                  <div className="relative">
-                     <label htmlFor="confirmnewpassword" className="text-primary mb-1 block text-xl font-semibold">
-                        Konfirmasi Password Baru
-                     </label>
-                     <div className="relative">
-                        <input
-                           onChange={handleChange}
-                           value={passwords.confirmnewpassword}
-                           type={showConfirmPass ? "text" : "password"}
-                           name="confirmnewpassword"
-                           id="confirmnewpassword"
-                           placeholder="Konfirmasi Password Baru..."
-                           className={`bg-background text-primary w-full rounded-md px-2.5 py-2.5 pr-10 outline-none focus:ring ${errors.confirmnewpassword ? "border-2 border-red-500 focus:ring-red-200" : ""}`}
-                        />
-                        <button type="button" onClick={() => setShowConfirmPass(!showConfirmPass)} className="hover:text-primary absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-gray-500 transition-colors">
-                           {showConfirmPass ? <Eye /> : <EyeClosed />}
-                        </button>
-                     </div>
-                  </div>
-                  {errors.confirmnewpassword && <p className="mt-1 ml-1 text-sm text-red-500">{errors.confirmnewpassword}</p>}
+               <div className="flex justify-end gap-3 pt-3 border-t border-border/20 mt-auto">
+                  <button 
+                     type="button"
+                     disabled={!hasChanges} 
+                     onClick={handleCancel} 
+                     className="px-5 py-2.5 rounded-xl border border-border/60 bg-white text-xs font-bold text-primary hover:bg-background/40 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                     Batal
+                  </button>
+                  <button 
+                     type="submit"
+                     disabled={isLoading}
+                     className="px-5 py-2.5 rounded-xl bg-primary text-white text-xs font-bold hover:opacity-90 active:scale-95 transition-all shadow-xs cursor-pointer disabled:opacity-50"
+                  >
+                     Simpan Kata Sandi
+                  </button>
                </div>
-            </div>
-
-            <div className="flex justify-end gap-3">
-               <button disabled={!hasChanges} onClick={handleCancel} className="bg-primary flex w-fit cursor-pointer justify-end rounded-xl px-4 py-2">
-                  Batal
-               </button>
-               <button onClick={handleSave} className="bg-primary flex w-fit cursor-pointer justify-end rounded-xl px-4 py-2">
-                  Simpan Kata Sandi
-               </button>
-            </div>
-         </form>
+            </form>
+         </div>
       </div>
    );
 }
+
+
+

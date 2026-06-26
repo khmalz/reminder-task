@@ -17,12 +17,12 @@ export function proxy(request) {
       // Punya token
 
       /**
-       * Apakah mau ke halaman auth?
+       * Apakah mau ke halaman auth atau root (/) ?
        * Jika iya, redirect ke /dashboard
        * Jika tidak, dipersilahkan lewat
        */
 
-      if (authPaths.includes(pathname)) {
+      if (authPaths.includes(pathname) || pathname === "/") {
          return NextResponse.redirect(new URL("/dashboard", request.url))
       } else {
          return NextResponse.next()
@@ -33,13 +33,12 @@ export function proxy(request) {
       // Ga punya token
 
       /**
-       * Apakah mau ke halaman public?
+       * Apakah mau ke halaman auth (public)?
        * Jika iya, dipersilahkan lewat
-       * Jika tidak, maka redirect ke /login
+       * Jika tidak (termasuk root /), maka redirect ke /login
        */
 
-      // TODO
-      if (publicPaths.includes(pathname)){
+      if (authPaths.includes(pathname)){
          return NextResponse.next()
       } else {
          return NextResponse.redirect(new URL("/login", request.url))

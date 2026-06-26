@@ -24,17 +24,18 @@ export function ProfileNavbar() {
 
    useEffect(() => {
       const updateUserData = () => {
-         const userInfo = JSON.parse(localStorage.getItem("userInfo"))
+         const userInfoData = JSON.parse(localStorage.getItem("userInfo"));
 
-         setUserInfo({
-            fullName: userInfo.name,
-            userName: userInfo.username,
-         });
+         if (userInfoData) {
+            setUserInfo({
+               fullName: userInfoData.name,
+               userName: userInfoData.username,
+            });
+         }
       };
 
       updateUserData();
 
-      // Opsional: Listen jika ada perubahan storage dari tab lain
       window.addEventListener("storage", updateUserData);
       return () => window.removeEventListener("storage", updateUserData);
    }, []);
@@ -49,7 +50,6 @@ export function ProfileNavbar() {
       try {
          const token = localStorage.getItem("token");
 
-         // Fetch ke API sesuai Swagger
          const res = await fetch("http://localhost:3000/auth/logout", {
             method: "POST",
             headers: {
@@ -57,7 +57,6 @@ export function ProfileNavbar() {
             },
          });
 
-         // Tetap hapus storage meskipun API gagal/expired (401) demi keamanan
          if (res.ok || res.status === 401) {
             document.cookie = "token=; path=/; max-age=0";
             localStorage.clear();
@@ -74,11 +73,11 @@ export function ProfileNavbar() {
    };
 
    return (
-      <div className="flex h-[450px] w-64 flex-col items-center justify-between rounded-2xl bg-muted px-3 py-8 shadow-sm">
-         {/* Tampilan Nama yang Dinamis */}
-         <div className="flex w-full flex-col gap-1 overflow-hidden">
-            <h2 className="truncate px-2 text-center text-xl font-bold text-primary">Hai, {userInfo.fullName}</h2>
-            <h4 className="truncate text-center text-base font-medium text-primary/70">@{userInfo.userName}</h4>
+      <div className="flex h-[450px] w-64 flex-col items-center justify-between rounded-2xl bg-card border border-border/80 px-4 py-8 shadow-xs font-lexend animate-in fade-in duration-200">
+         {/* Dynamic Name Display */}
+         <div className="flex w-full flex-col gap-1 overflow-hidden border-b border-border/20 pb-4">
+            <h2 className="truncate px-2 text-center text-lg font-bold text-primary">Hai, {userInfo.fullName}</h2>
+            <h4 className="truncate text-center text-xs font-semibold text-secondary">@{userInfo.userName}</h4>
          </div>
 
          <nav className="flex w-full flex-col gap-2">
@@ -87,32 +86,55 @@ export function ProfileNavbar() {
                const isActive = pathName === item.Path;
 
                return (
-                  <Link key={item.Path} href={item.Path} className={cn("flex w-full items-center gap-3 rounded-xl px-4 py-3 transition-all", isActive ? "bg-background font-semibold text-primary" : "text-accent hover:bg-primary")}>
-                     <Icon size={20} />
-                     <span className="text-sm">{item.Label}</span>
+                  <Link 
+                     key={item.Path} 
+                     href={item.Path} 
+                     className={cn(
+                        "flex w-full items-center gap-3 rounded-xl px-4 py-3 transition-all duration-200 text-sm",
+                        isActive 
+                           ? "bg-primary text-white font-bold shadow-xs" 
+                           : "text-primary/80 hover:bg-primary/5 hover:text-primary font-medium"
+                     )}
+                  >
+                     <Icon className="h-4.5 w-4.5" />
+                     <span>{item.Label}</span>
                   </Link>
                );
             })}
 
-            <button onClick={() => setLogoutDialogOpen(true)} className="mt-10 cursor-pointer flex w-full items-center gap-3 rounded-xl px-4 py-3 font-medium outline-red-900 outline-2 text-red-900 transition-all hover:bg-red-900 hover:text-accent">
-               <LogOut size={20} />
-               <span className="text-sm">Keluar</span>
+            <button 
+               onClick={() => setLogoutDialogOpen(true)} 
+               className="mt-10 cursor-pointer flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-red-600 hover:bg-red-50 hover:text-red-700 transition-all duration-200"
+            >
+               <LogOut className="h-4.5 w-4.5" />
+               <span>Keluar</span>
             </button>
          </nav>
 
+         {/* Dummy empty element to keep layout balanced */}
+         <div />
+
          {/* Logout Confirmation Dialog */}
-         <Dialog open={isLogoutDialogOpen} onOpenChange={setLogoutDialogOpen} >
-            <DialogContent className="sm:max-w-[400px] bg-background">
-               <DialogHeader>
-                  <DialogTitle className={"text-primary"}>Konfirmasi Keluar</DialogTitle>
-                  <DialogDescription>Apakah Anda yakin ingin keluar? Sesi Anda akan berakhir.</DialogDescription>
+         <Dialog open={isLogoutDialogOpen} onOpenChange={setLogoutDialogOpen}>
+            <DialogContent className="sm:max-w-[400px] bg-card border border-border/80 rounded-2xl p-6 font-lexend">
+               <DialogHeader className="text-left">
+                  <DialogTitle className="text-primary text-lg font-bold">Konfirmasi Keluar</DialogTitle>
+                  <DialogDescription className="text-secondary text-sm font-medium mt-1">Apakah Anda yakin ingin keluar? Sesi Anda akan berakhir.</DialogDescription>
                </DialogHeader>
-               <DialogFooter className="flex gap-2 pt-4 sm:gap-0">
-                  <button disabled={isLoading} onClick={() => setLogoutDialogOpen(false)} className="w-full rounded-lg px-4 py-2 text-sm font-medium text-primary cursor-pointer sm:w-auto">
+               <DialogFooter className="flex flex-col sm:flex-row gap-2 pt-4 border-t border-border/20 mt-4 justify-end">
+                  <button 
+                     disabled={isLoading} 
+                     onClick={() => setLogoutDialogOpen(false)} 
+                     className="px-4 py-2 rounded-xl border border-border/60 bg-white text-xs font-bold text-primary hover:bg-background/40 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
                      Batal
                   </button>
-                  <button disabled={isLoading} onClick={handleLogout} className="flex w-full items-center justify-center gap-2 rounded-lg bg-red-900 px-4 py-2 text-sm font-medium text-accent cursor-pointer sm:w-auto">
-                     {isLoading && <Loader2 size={16} className="animate-spin" />}
+                  <button 
+                     disabled={isLoading} 
+                     onClick={handleLogout} 
+                     className="flex items-center justify-center gap-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold hover:opacity-90 active:scale-95 transition-all shadow-xs cursor-pointer disabled:opacity-50"
+                  >
+                     {isLoading && <Loader2 size={14} className="animate-spin" />}
                      Keluar Sekarang
                   </button>
                </DialogFooter>
@@ -121,3 +143,4 @@ export function ProfileNavbar() {
       </div>
    );
 }
+

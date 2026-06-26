@@ -20,25 +20,31 @@ export default function CalendarCard() {
    const dayName = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
    const monthName = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 
+   const monthShortName = ["JAN", "FEB", "MAR", "APR", "MEI", "JUN", "JUL", "AGU", "SEP", "OKT", "NOV", "DES"];
+
    // 4. Ambil data satu-satu
    const day = dayName[date.getDay()];
    const dateNow = date.getDate();
    const month = monthName[date.getMonth()];
+   const monthShort = monthShortName[date.getMonth()];
    const year = date.getFullYear();
 
    return (
-      <>
-         <div className="bg-primary flex h-fit w-65 items-center justify-center gap-4 rounded-2xl px-5 py-4">
-            <div className="bg-secondary text-primary flex h-20 w-20 flex-col items-center justify-center rounded-2xl">
-               <h1 className="text-lg font-semibold">{day}</h1>
-               <h1 className="text-4xl font-semibold">{dateNow}</h1>
+      <div className="mt-1 flex items-center gap-3">
+         {/* Mini Calendar Sheet Icon */}
+         <div className="flex h-11 w-11 flex-col overflow-hidden rounded-lg border border-border/80 shadow-xs">
+            <div className="bg-primary flex h-3.5 items-center justify-center text-[8px] font-bold text-white tracking-wider">
+               {monthShort}
             </div>
-
-            <div className="flex flex-col">
-               <h1 className="text-secondary text-2xl font-semibold">{year}</h1>
-               <h1 className="text-2xl font-semibold text-accent">{month}</h1>
+            <div className="bg-white flex flex-1 items-center justify-center text-sm font-bold text-primary">
+               {dateNow}
             </div>
          </div>
-      </>
+         {/* Text Info */}
+         <div className="flex flex-col">
+            <span className="text-sm font-bold text-primary leading-tight">{day}</span>
+            <span className="text-xs text-secondary font-medium mt-0.5">{dateNow} {month} {year}</span>
+         </div>
+      </div>
    );
 }

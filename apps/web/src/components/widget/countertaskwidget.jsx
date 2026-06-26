@@ -1,15 +1,15 @@
-export default function CounterTaskWidget({title, desc, count}){
-    return (
-       <>
-          <div className="bg-primary flex h-30 w-45 flex-col items-center justify-center rounded-xl px-5 py-3 gap-3">
-            <div className="flex flex-col justify-center items-center">
-             <h1 className="text-accent text-xl font-semibold">{title}</h1>
-             <h1 className="text-accent text-base font-normal">{desc}</h1>
-            </div>
-             <div className="bg-card h-fit w-fit rounded-lg px-4 py-2">
-                <h1 className="text-primary text-4xl font-semibold">{count}</h1>
-             </div>
-          </div>
-       </>
-    );
+// components/StatCard.jsx
+export default function StatCard({ title, value, subtitle, valueColor = "text-primary", icon: Icon }) {
+   return (
+      <div className="relative flex min-h-[110px] flex-1 flex-col justify-between rounded-xl border border-primary/80 bg-white p-5 shadow-xs transition-all duration-200 hover:border-primary/30">
+         <div className="flex items-start justify-between">
+            <span className="text-lg font-medium text-primary">{title}</span>
+            {Icon && <Icon className="h-5 w-5 text-primary" />}
+         </div>
+         <div className="mt-1.5 flex flex-col">
+            <span className={`text-3xl font-bold ${valueColor}`}>{value}</span>
+            {subtitle && <span className="mt-1 text-sm font-medium text-primary/80 leading-tight">{subtitle}</span>}
+         </div>
+      </div>
+   );
 }
