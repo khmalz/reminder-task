@@ -4,4 +4,8 @@ export function middleware(request) {
    return proxy(request);
 }
 
-export { config } from "./proxy";
+export const config = {
+   matcher: [
+      "/((?!api|_next/static|_next/image|_next/data|favicon.ico|assets).*)",
+   ],
+};
