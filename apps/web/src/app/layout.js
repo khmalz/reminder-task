@@ -1,5 +1,6 @@
 import { Belanosima, Lexend_Deca, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+import { NotificationProvider } from "@/context/NotificationContext";
 
 const belanosima = Belanosima({
    weight: ["400", "600", "700"],
@@ -27,7 +28,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
    return (
       <html lang="en">
-         <body className={`${belanosima.variable} ${lexendDeca.variable} font-lexend antialiased`}>{children}</body>
+         <body className={`${belanosima.variable} ${lexendDeca.variable} font-lexend antialiased`}>
+            <NotificationProvider>{children}</NotificationProvider>
+         </body>
       </html>
    );
 }

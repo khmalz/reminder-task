@@ -3,8 +3,10 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { Plus, ChevronRight, Shield } from "lucide-react";
 import CategoryDialog from "@/components/dialog/categorydialog";
+import { useNotification } from "@/context/NotificationContext";
 
 export default function LabelsPage() {
+   const { toast, confirm } = useNotification();
    const types = useMemo(
       () => ({
          Jenis: "TASK_KIND",
@@ -142,32 +144,34 @@ export default function LabelsPage() {
          getAllLabel();
          setIsDialogOpen(false);
          setDialogInput("");
-         alert(isEditMode ? "Kategori sukses diedit" : "Kategori sukses ditambah");
+         toast(isEditMode ? "Kategori sukses diedit!" : "Kategori sukses ditambah!", "success");
       } catch (error) {
          console.error("Terjadi kesalahan:", error);
-         alert(error.message || "Gagal menyimpan perubahan. Silakan coba lagi.");
+         toast(error.message || "Gagal menyimpan perubahan. Silakan coba lagi.", "error");
       }
    };
 
    const handleDelete = async () => {
-      if (!confirm("Yakin ingin menghapus kategori ini?")) return;
-      let baseURL = `http://localhost:3000/category/${activeItemId}`;
-      try {
-         const res = await fetch(baseURL, {
-            method: "DELETE",
-            headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-         });
+      confirm("Yakin ingin menghapus kategori ini?").then(async (ok) => {
+         if (!ok) return;
+         let baseURL = `http://localhost:3000/category/${activeItemId}`;
+         try {
+            const res = await fetch(baseURL, {
+               method: "DELETE",
+               headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+            });
 
-         if (!res.ok) {
-            throw new Error("Gagal Menghapus Kategori");
+            if (!res.ok) {
+               throw new Error("Gagal Menghapus Kategori");
+            }
+            toast("Kategori sukses dihapus!", "success");
+            getAllLabel();
+            setIsDialogOpen(false);
+         } catch (error) {
+            console.error("Terjadi kesalahan:", error);
+            toast("Gagal Menghapus Kategori. Silakan coba lagi.", "error");
          }
-         alert("Kategori sukses dihapus");
-         getAllLabel();
-         setIsDialogOpen(false);
-      } catch (error) {
-         console.error("Terjadi kesalahan:", error);
-         alert("Gagal Menghapus Kategori. Silakan coba lagi.");
-      }
+      });
    };
 
    return (

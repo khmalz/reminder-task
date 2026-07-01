@@ -3,8 +3,10 @@
 import { useState, useEffect } from "react";
 import { User, Edit } from "lucide-react";
 import EditProfileDialog from "@/components/dialog/editprofiledialog";
+import { useNotification } from "@/context/NotificationContext";
 
 export default function ProfilePage() {
+   const { toast } = useNotification();
    const [userInfo, setUserInfo] = useState({
       fullname: "", username: ""
    });
@@ -70,7 +72,7 @@ export default function ProfilePage() {
             });
 
             setDialogOpen(false);
-            alert("Profil berhasil diperbarui!");
+            toast("Profil berhasil diperbarui!", "success");
          } else {
             const errorMsg = Array.isArray(data.message) ? data.message.join(", ") : data.message;
             setError(errorMsg || "Gagal memperbarui profil.");

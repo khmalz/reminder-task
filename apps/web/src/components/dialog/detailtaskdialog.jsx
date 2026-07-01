@@ -1,10 +1,11 @@
 import React from "react";
 import { Calendar } from "lucide-react";
+import formatDate from "@/lib/formatDate";
 
 const DetailTaskDialog = ({ task, onEdit, onToggle }) => {
-   const categories = task.categoryToTasks.reduce(
+   const categories = task.categoryToTasks?.reduce(
       (acc, item) => {
-         const { title, typeName } = item.category;
+         const { title, typeName } = item.category || {};
 
          if (typeName === "TASK_KIND") acc.kind = title;
          if (typeName === "TASK_TYPE") acc.type = title;
@@ -13,12 +14,13 @@ const DetailTaskDialog = ({ task, onEdit, onToggle }) => {
          return acc;
       },
       { kind: "-", type: "-", method: "-" },
-   );
+   ) || { kind: "-", type: "-", method: "-" };
+
    return (
       <div className="text-center">
          <h2 className="mb-1 text-2xl font-bold">{task.title}</h2>
          <p className="mb-6 flex items-center justify-center gap-2 text-sm opacity-80">
-            <Calendar size={14} /> {task.date}
+            <Calendar size={14} /> {formatDate(task.dueDateAt || task.deadline)}
          </p>
 
          <div className="mb-8 space-y-3 text-left">

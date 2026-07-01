@@ -23,7 +23,7 @@ export default function HeaderDashboard({
 
          {/* Sisi Kanan: Metrik dari Props Halaman */}
          <div className="flex w-full flex-1 flex-col gap-4 sm:flex-row xl:w-auto xl:max-w-2xl">
-            <StatCard title="Tugas Mendesak" value={urgentCount} valueColor={urgentCount > 0 ? "text-red-800" : "text-primary"} subtitle={urgentCount > 0 ? `${urgentCount} harus dikerjakan secepatnya` : "Tidak ada tugas yang mendesak"} icon={AlertCircle} />
+            <StatCard title="Tugas Mendesak" value={urgentCount} subtitle={urgentCount > 0 ? `${urgentCount} harus dikerjakan secepatnya` : "Tidak ada tugas yang mendesak"} icon={AlertCircle} variant={urgentCount > 0 ? "danger" : undefined} />
             <StatCard title="Selesai Hari Ini" value={completedCount} valueColor="text-primary" subtitle={`${completedCount} tugas sudah dikerjakan hari ini`} icon={CheckCircle2} />
             <StatCard title="Progress Tepat Waktu" value={`${onTimePercentage}%`} subtitle={`${totalOnTime} dari ${totalTasks} tugas selesai tepat waktu`} valueColor="text-primary" icon={TrendingUp} />
          </div>

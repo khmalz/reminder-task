@@ -2,8 +2,10 @@
 
 import { Eye, EyeClosed, KeyRound } from "lucide-react";
 import { useState } from "react";
+import { useNotification } from "@/context/NotificationContext";
 
 export default function ProfilePage() {
+   const { toast } = useNotification();
    const [passwords, setPasswords] = useState({
       oldpassword: "",
       newpassword: "",
@@ -96,7 +98,7 @@ export default function ProfilePage() {
             newpassword: "",
             confirmnewpassword: "",
          });
-         alert("Password berhasil diperbarui!");
+         toast("Password berhasil diperbarui!", "success");
       } catch (error) {
          console.error("Update error:", error);
          setErrors(prev => ({

@@ -2,8 +2,10 @@
 
 import React, { useState, useEffect } from "react";
 import { X, ChevronDown, Trash2 } from "lucide-react";
+import { useNotification } from "@/context/NotificationContext";
 
 export default function FormTaskDialog({ mode, initialData, onSave, onDelete, onClose }) {
+   const { toast, confirm } = useNotification();
    const formatDateForInput = (dateString) => {
       if (!dateString) return "";
       const d = new Date(dateString);
@@ -42,7 +44,9 @@ export default function FormTaskDialog({ mode, initialData, onSave, onDelete, on
 
    const [formData, setFormData] = useState({
       title: initialData?.title || "",
-      deadline: initialData?.deadline ? formatDateForInput(initialData.deadline) : "",
+      deadline: initialData?.dueDateAt 
+         ? formatDateForInput(initialData.dueDateAt) 
+         : (initialData?.deadline ? formatDateForInput(initialData.deadline) : ""),
       selectedJenis: categories?.kind?.id || "",
       selectedTipe: categories?.type?.id || "",
       selectedPengumpulan: categories?.method?.id || "",
@@ -83,17 +87,21 @@ export default function FormTaskDialog({ mode, initialData, onSave, onDelete, on
 
    const handleSubmit = (e) => {
       e.preventDefault();
-      if (!formData.title.trim()) return alert("Judul tugas wajib diisi!");
+      if (!formData.title.trim()) return toast("Judul tugas wajib diisi!", "error");
+      if (!formData.deadline) return toast("Batas waktu (deadline) wajib diisi!", "error");
 
       // Gabungkan ID yang dipilih menjadi array sesuai Swagger
       const categoryIds = [formData.selectedJenis, formData.selectedTipe, formData.selectedPengumpulan].filter(id => id && id !== "");
+
+      const isoDate = formData.deadline ? new Date(formData.deadline).toISOString() : null;
 
       onSave({
          ...initialData,
          title: formData.title.trim(),
          isCompleted: initialData?.isCompleted || false,
          categoryIds: categoryIds,
-         deadline: formData.deadline ? new Date(formData.deadline).toISOString() : null,
+         dueDateAt: isoDate,
+         deadline: isoDate,
       });
    };
 
@@ -219,6 +227,7 @@ export default function FormTaskDialog({ mode, initialData, onSave, onDelete, on
                      id="task_deadline"
                      value={formData.deadline}
                      onChange={e => setFormData({ ...formData, deadline: e.target.value })}
+                     required
                      className="w-full rounded-xl bg-background border border-border/80 px-3.5 py-2.5 text-xs font-semibold text-primary outline-none focus:border-primary/50 transition-colors cursor-pointer"
                   />
                </div>
@@ -230,9 +239,9 @@ export default function FormTaskDialog({ mode, initialData, onSave, onDelete, on
                         <button
                            type="button"
                            onClick={() => {
-                              if (confirm("Yakin mau menghapus tugas ini?")) {
-                                 onDelete(initialData.id);
-                              }
+                              confirm("Yakin mau menghapus tugas ini?").then(ok => {
+                                 if (ok) onDelete(initialData.id);
+                              });
                            }}
                            className="p-2 rounded-xl text-red-800 hover:bg-red-50 transition-colors cursor-pointer"
                            title="Hapus Tugas"

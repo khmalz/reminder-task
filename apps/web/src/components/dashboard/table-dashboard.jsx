@@ -142,7 +142,7 @@ export default function TableDashboard({ tasks = [], onAdd, onEdit, onDelete, on
          } else if (statusFilter === "Belum Selesai") {
             matchesStatus = !task.isCompleted;
          } else if (statusFilter === "Terlambat") {
-            const deadlineDate = task.deadline ? new Date(task.deadline) : null;
+            const deadlineDate = (task.dueDateAt || task.deadline) ? new Date(task.dueDateAt || task.deadline) : null;
             matchesStatus = !task.isCompleted && deadlineDate && deadlineDate < now;
          }
          
@@ -273,7 +273,7 @@ export default function TableDashboard({ tasks = [], onAdd, onEdit, onDelete, on
                               {/* Pengumpulan */}
                               <TableCell className="text-xs text-primary/80 font-semibold">{cats.collection}</TableCell>
                               {/* Deadline */}
-                              <TableCell className="text-xs text-primary/80 font-semibold whitespace-nowrap">{formatDateCleanly(task.deadline)}</TableCell>
+                              <TableCell className="text-xs text-primary/80 font-semibold whitespace-nowrap">{formatDateCleanly(task.dueDateAt || task.deadline)}</TableCell>
                               {/* Status (Pill Badge) */}
                               <TableCell className="text-xs whitespace-nowrap">
                                  {task.isCompleted ? (

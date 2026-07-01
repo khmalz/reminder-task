@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useEffect, useMemo } from "react";
 
 // Import Komponen Kita
@@ -12,43 +13,33 @@ import HeaderDashboard from "@/components/dashboard/header-dashboard";
 import StatsDashboard from "@/components/dashboard/stats-dashboard";
 import TableDashboard from "@/components/dashboard/table-dashboard";
 
+// Import Custom Hooks
+import { useTasks } from "@/hooks/useTasks";
+import { useNotification } from "@/context/NotificationContext";
 
 export default function DashboardPage() {
-   const [tasks, setTasks] = useState([]);
+   const { toast, confirm } = useNotification();
+   const {
+      tasks,
+      isLoading,
+      addTask,
+      editTask,
+      deleteTask,
+      toggleComplete,
+   } = useTasks();
+
    const [userInfo, setUserInfo] = useState({ fullName: "", userName: "" });
    const [modalState, setModalState] = useState({ mode: "CLOSED", activeTask: null, defaultStatus: "belum_selesai" });
-   const [isLoading, setIsLoading] = useState(true);
-
-   const fetchTasks = async () => {
-      setIsLoading(true);
-      try {
-         const token = localStorage.getItem("token");
-         const res = await fetch("http://localhost:3000/tasks", {
-            method: "GET",
-            headers: { Authorization: `Bearer ${token}` },
-         });
-         const data = await res.json();
-         if (res.ok) {
-            setTasks(data);
-         }
-      } catch (err) {
-         console.error("Gagal fetch tugas:", err);
-      } finally {
-         setIsLoading(false);
-      }
-   };
 
    useEffect(() => {
       // Ambil info user dari localStorage
-      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-      console.log(userInfo);
-      if (userInfo) {
+      const storedUserInfo = typeof window !== "undefined" ? JSON.parse(localStorage.getItem("userInfo")) : null;
+      if (storedUserInfo) {
          setUserInfo({
-            fullName: userInfo.name,
-            userName: userInfo.username,
+            fullName: storedUserInfo.name,
+            userName: storedUserInfo.username,
          });
       }
-      fetchTasks();
    }, []);
 
    // --- LOGIC STATISTIK (Dinamis dari State Tasks) ---
@@ -61,8 +52,7 @@ export default function DashboardPage() {
       const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
       tasks.forEach(task => {
-         // Asumsi API mengembalikan field deadline. Jika tidak ada, pakai default now.
-         const taskDeadline = task.deadline ? new Date(task.deadline) : now;
+         const taskDeadline = (task.dueDateAt || task.deadline) ? new Date(task.dueDateAt || task.deadline) : now;
 
          if (!task.isCompleted) {
             // Urgent: Belum selesai & deadline lewat atau hari ini
@@ -91,127 +81,45 @@ export default function DashboardPage() {
 
    // --- LOGIC HANDLERS ---
    const handleAddTask = async formData => {
-      // Fallback lokal untuk simulasi offline
-      const mockId = Date.now();
-      const newTask = {
-         id: mockId,
-         title: formData.title,
-         isCompleted: false,
-         deadline: formData.deadline || null,
-         categoryToTasks: formData.categoryIds?.map(catId => ({
-            category: { id: catId, title: "Kategori", typeName: "TASK_KIND" }
-         })) || []
-      };
-
-      setTasks(prev => [newTask, ...prev]);
-
       try {
-         const token = localStorage.getItem("token");
-         const res = await fetch("http://localhost:3000/tasks", {
-            method: "POST",
-            headers: {
-               "Content-Type": "application/json",
-               Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-               title: formData.title,
-               isCompleted: false,
-               categoryIds: formData.categoryIds || [],
-               deadline: formData.deadline || null,
-            }),
-         });
-
-         if (res.ok) {
-            fetchTasks(); // Refresh data dari server jika online
-         }
+         await addTask(formData);
+         closeModal();
+         toast("Tugas baru berhasil ditambahkan!", "success");
       } catch (err) {
-         console.warn("Offline: menambahkan tugas ke state lokal saja.");
+         toast(err.message || "Gagal menambahkan tugas.", "error");
       }
-      closeModal();
    };
 
    const handleEditTask = async updatedTask => {
-      // Fallback lokal untuk simulasi offline
-      setTasks(prev =>
-         prev.map(t => t.id === updatedTask.id ? {
-            ...t,
-            title: updatedTask.title,
-            deadline: updatedTask.deadline || null,
-            categoryToTasks: updatedTask.categoryIds?.map(catId => ({
-               category: { id: catId, title: "Kategori", typeName: "TASK_KIND" }
-            })) || t.categoryToTasks
-         } : t)
-      );
-
       try {
-         const token = localStorage.getItem("token");
-         const res = await fetch("http://localhost:3000/tasks/" + updatedTask.id, {
-            method: "PATCH",
-            headers: {
-               "Content-Type": "application/json",
-               Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-               title: updatedTask.title,
-               categoryIds: updatedTask.categoryIds || [],
-               deadline: updatedTask.deadline || null,
-            }),
-         });
-
-         if (res.ok) {
-            fetchTasks(); // Refresh data dari server jika online
-         }
+         await editTask(updatedTask);
+         closeModal();
+         toast("Informasi tugas berhasil diperbarui!", "success");
       } catch (err) {
-         console.warn("Offline: mengedit tugas di state lokal saja.");
+         toast(err.message || "Gagal mengubah tugas.", "error");
       }
-      closeModal();
    };
 
    const handleDeleteTask = async taskId => {
-      if (confirm("Yakin mau hapus tugas ini?")) {
-         // Fallback lokal
-         setTasks(prev => prev.filter(t => t.id !== taskId));
-
-         try {
-            const token = localStorage.getItem("token");
-            const res = await fetch("http://localhost:3000/tasks/" + taskId, {
-               method: "DELETE",
-               headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
-               },
-            });
-
-            if (res.ok) {
-               fetchTasks(); // Refresh data dari server jika online
+      confirm("Yakin mau hapus tugas ini?").then(async (ok) => {
+         if (ok) {
+            try {
+               await deleteTask(taskId);
+               closeModal();
+               toast("Tugas berhasil dihapus!", "success");
+            } catch (err) {
+               toast(err.message || "Gagal menghapus tugas.", "error");
             }
-         } catch (err) {
-            console.warn("Offline: menghapus tugas dari state lokal saja.");
          }
-         closeModal();
-      }
+      });
    };
 
    const handleToggleComplete = async taskId => {
-      // Optimistic / Fallback local update
-      setTasks(prev =>
-         prev.map(t => t.id === taskId ? { ...t, isCompleted: !t.isCompleted } : t)
-      );
-
       try {
-         const token = localStorage.getItem("token");
-         const res = await fetch(`http://localhost:3000/tasks/${taskId}/toggle-completed`, {
-            method: "PATCH",
-            headers: {
-               Authorization: `Bearer ${token}`,
-            },
-         });
-
-         if (res.ok) {
-            fetchTasks(); // Refresh data dari server jika online
-         }
+         await toggleComplete(taskId);
+         toast("Status tugas berhasil diperbarui!", "success");
       } catch (err) {
-         console.warn("Offline: mengubah status tugas di state lokal saja.");
+         toast(err.message || "Gagal memperbarui status tugas.", "error");
       }
    };
 
@@ -220,13 +128,6 @@ export default function DashboardPage() {
    const openEditModal = task => setModalState({ mode: "EDIT", activeTask: task });
    const openDetailModal = task => setModalState({ mode: "DETAIL", activeTask: task });
    const closeModal = () => setModalState({ mode: "CLOSED", activeTask: null });
-
-   // --- FILTERING ---
-   const todoTasks = tasks.filter(t => {
-      return !t.isCompleted;
-   });
-
-   const doneTasks = tasks.filter(t => t.isCompleted);
 
    return (
       <div className="m-6 flex flex-col items-center justify-center gap-2">
@@ -279,4 +180,3 @@ export default function DashboardPage() {
       </div>
    );
 }
-
